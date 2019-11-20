@@ -11,7 +11,6 @@ Reservation
 __ReservationId__ int	primary key
 UserId		int	references User.__UserId__
 CardId		bigint	references CreditCard.__CardId__
-RoomId		int	references Room.__RoomId__
 CheckIn		date
 CheckOut	date
 Occupants	tinyint
@@ -22,7 +21,7 @@ ReservationId	int	references Reservation.__ReservationId__
 RoomId		int	references Room.__RoomId__
 
 User
-__UserId__	int
+__UserId__	int	primary key
 FirsName	varchar
 LastName	varchar
 username	varchar
@@ -30,6 +29,6 @@ password	varchar  --Ignoring security; This is a class assignment, not a product
 type		enum('manager', 'normal')
 
 CreditCard
-__CardId__	bigint
+__CardId__	bigint	primary key
 balance		float
 climit		float
