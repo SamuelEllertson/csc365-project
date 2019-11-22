@@ -32,7 +32,6 @@ CREATE TABLE Reservation(
 	CardId BIGINT UNSIGNED NOT NULL,
 	CheckIn DATE NOT NULL,
 	CheckOut DATE NOT NULL,
-	Occupants TINYINT UNSIGNED NOT NULL,
 	PRIMARY KEY (__ReservationId__),
 	FOREIGN KEY (UserId) REFERENCES User(__UserId__),
 	FOREIGN KEY (CardId) REFERENCES CreditCard(__CardId__)
@@ -41,6 +40,8 @@ CREATE TABLE Reservation(
 CREATE TABLE RoomsReserved(
 	ReservationId INT UNSIGNED NOT NULL, 
 	RoomId INT UNSIGNED NOT NULL,
-	FOREIGN KEY (ReservationId) REFERENCES Reservation(__ReservationId__),
+	Occupants TINYINT UNSIGNED NOT NULL,
+   PRIMARY KEY (ReservationId, RoomId),
+   FOREIGN KEY (ReservationId) REFERENCES Reservation(__ReservationId__),
 	FOREIGN KEY (RoomId) REFERENCES Room(__RoomId__)
 )
