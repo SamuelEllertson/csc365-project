@@ -40,6 +40,7 @@ public class Main{
         //create our view and begin the UI loop
         Controller controller = new Controller(connectionFactory);
         View view = new View(controller);
+        controller.view = view;
 
         view.doUILoop();
     }
