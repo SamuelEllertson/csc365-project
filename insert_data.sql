@@ -9,12 +9,12 @@ INSERT INTO User(FirstName, LastName, username, password, type)
    VALUES('Mary', 'Sue', 'msue76', 'p@$$w0rD', 'customer');
 
 --Rooms
-INSERT INTO Room (__RoomId__, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (11, 8, 'single', 'queen', 2, 'Modern', 110);
-INSERT INTO Room (__RoomId__, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (12, 4, 'single', 'king', 1, 'Bohemian', 85);
+INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (11, 8, 'single', 'queen', 2, 'Modern', 110);
+INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (12, 4, 'single', 'king', 1, 'Bohemian', 85);
 
 --Credit Cards
-INSERT INTO CreditCard(__CardId__, balance, climit) VALUES(1, 0, 10000);
-INSERT INTO CreditCard(__CardId__, balance, climit) VALUES(2, 0, 100000);
+INSERT INTO CreditCard(CardId, balance, climit) VALUES(1, 0, 10000);
+INSERT INTO CreditCard(CardId, balance, climit) VALUES(2, 0, 100000);
 
 --Reservations
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(2, 1, '2019-11-22', '2019-11-24');
