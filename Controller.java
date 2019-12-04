@@ -1,24 +1,25 @@
 
 public class Controller{
 
-    private ConnectionFactory connectionFactory;
+    public ConnectionFactory connectionFactory;
 
     //TODO: Uncomment when the DAOS are implemented
+    
+    public RoomDAO roomDAO;
     /*
-    private RoomDAO roomDAO;
-    private UserDAO userDAO;
-    private ReservationDAO reservationDAO;
-    private CreditCardDAO creditCardDAO;
+    public UserDAO userDAO;
+    public ReservationDAO reservationDAO;
+    public CreditCardDAO creditCardDAO;
     */
 
-    public Controller(ConnectionFactory connectionFactory){
-        this.connectionFactory = connectionFactory;
+    public Controller(ConnectionFactory cf){
+        this.connectionFactory = cf;
 
+        this.roomDAO = new RoomDAO(cf.getConnection());
         /*
-        this.roomDAO = new RoomDAO;
-        this.userDAO = new UserDAO;
-        this.reservationDAO = new ReservationDAO;
-        this.creditCardDAO = new CreditCardDAO;
+        this.userDAO = new UserDAO(cf.getConnection());
+        this.reservationDAO = new ReservationDAO(cf.getConnection());
+        this.creditCardDAO = new CreditCardDAO(cf.getConnection());
         */
     }
 
