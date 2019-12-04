@@ -58,7 +58,7 @@ public class ReservationDAO implements Dao<Reservation>{
    }
    @Override
    public Set<Reservation> getAll() {
-      Set<Reservation> rooms = null;
+      Set<Reservation> resrvations = null;
       PreparedStatement preparedStatement = null;
       ResultSet resultSet = null;
       try {
@@ -90,7 +90,7 @@ public class ReservationDAO implements Dao<Reservation>{
 
    //Never used since we are not creating new rooms.
    @Override
-   public Boolean insert(Room obj) {
+   public Boolean insert(Reservation obj) {
       return null;
    }
 
@@ -131,7 +131,7 @@ public class ReservationDAO implements Dao<Reservation>{
          rs.getLong("CardId"),
          rs.getString("CheckIn"),
          rs.getInt("CheckOut"));
-         rooms.add(room);
+         reservations.add(reservation);
       }
       return reservations;
    }
