@@ -2,10 +2,10 @@
 CREATE TABLE Room (
 	RoomId INT UNSIGNED NOT NULL,
 	MaxOccupancy TINYINT UNSIGNED NOT NULL,
-	RoomType ENUM('single', 'double', 'twin') NOT NULL,
-	BedType ENUM('twin', 'twin XL', 'double', 'queen', 'king', 'CA king') NOT NULL,
+	RoomType ENUM('SINGLE', 'DOUBLE', 'TWIN') NOT NULL,
+	BedType ENUM('TWIN', 'TWIN_XL', 'DOUBLE', 'QUEEN', 'KING', 'CA_KING') NOT NULL,
 	BedCount TINYINT UNSIGNED NOT NULL,
-	Decor ENUM('Modern', 'Industrial', 'Nautical', 'Scandinavian', 'Bohemian', 'Rustic') NOT NULL,
+	Decor ENUM('MODERN', 'INDUSTRIAL', 'NAUTICAL', 'SCANDINAVIAN', 'BOHEMIAN', 'RUSTIC') NOT NULL,
 	Price FLOAT NOT NULL,
 	PRIMARY KEY (RoomId)
 );
@@ -16,7 +16,7 @@ CREATE TABLE User(
 	LastName VARCHAR(50) NOT NULL,
 	username VARCHAR(50) NOT NULL UNIQUE,
 	password VARCHAR(50) NOT NULL, 
-	type ENUM('manager', 'customer') NOT NULL, 
+	type ENUM('MANAGER', 'CUSTOMER') NOT NULL, 
 	PRIMARY KEY (UserId)
 );
 

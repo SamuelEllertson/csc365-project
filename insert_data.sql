@@ -1,16 +1,16 @@
 --Users
 INSERT INTO User(FirstName, LastName, username, password, type)
-   VALUES('John', 'Doe', 'admin', 'admin', 'manager');
+   VALUES('John', 'Doe', 'admin', 'admin', 'MANAGER');
 
 INSERT INTO User(FirstName, LastName, username, password, type)
-   VALUES('Bob', 'Jones', 'bjones74', 'password', 'customer');
+   VALUES('Bob', 'Jones', 'bjones74', 'password', 'CUSTOMER');
 
 INSERT INTO User(FirstName, LastName, username, password, type)
-   VALUES('Mary', 'Sue', 'msue76', 'p@$$w0rD', 'customer');
+   VALUES('Mary', 'Sue', 'msue76', 'p@$$w0rD', 'CUSTOMER');
 
 --Rooms
-INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (11, 8, 'single', 'queen', 2, 'Modern', 110);
-INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (12, 4, 'single', 'king', 1, 'Bohemian', 85);
+INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (11, 8, 'SINGLE', 'QUEEN', 2, 'MODERN', 110);
+INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (12, 4, 'SINGLE', 'KING', 1, 'BOHEMIAN', 85);
 
 --Credit Cards
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(1, 0, 10000);
