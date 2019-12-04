@@ -26,49 +26,49 @@ public class Controller{
 
     //implements issue #5
     //returns true on success, false on failure
-    public bool CreateReservation(){
+    public boolean CreateReservation(){
         return false;
     }
 
     //implements issue #6
     //returns true on success, false on failure
-    public bool CancelReservation(){
+    public boolean CancelReservation(){
         return false;
     }
 
     //implements issue #7
     //returns true on success, false on failure
-    public bool RoomInformation(){
+    public boolean RoomInformation(){
         return false;
     }
 
     //implements issue #10
     //returns true on success, false on failure
-    public bool RoomQuery(){
+    public boolean RoomQuery(){
         return false;
     }
 
     //implements issue #11
     //returns true on success, false on failure
-    public bool RoomAvailability(){
+    public boolean RoomAvailability(){
         return false;
     }
 
     //implements issue #12
     //returns true on success, false on failure
-    public bool UpdateReservation(){
+    public boolean UpdateReservation(){
         return false;
     }
 
     //implements issue #13
     //returns true on success, false on failure
-    public bool DisplayReservations(){
+    public boolean DisplayReservations(){
         return false;
     }
 
     //implements issue #14
     //returns true on success, false on failure
-    public bool RevenueOverview(){
+    public boolean RevenueOverview(){
         return false;
     }
 
