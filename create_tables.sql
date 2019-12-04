@@ -1,35 +1,14 @@
-DROP TABLE Room IF EXISTS;
-CREATE TABLE Room (
+DROP TABLE RoomsReserved;
+CREATE TABLE RoomsReserved(
+	ReservationId INT UNSIGNED NOT NULL, 
 	RoomId INT UNSIGNED NOT NULL,
-	MaxOccupancy TINYINT UNSIGNED NOT NULL,
-	RoomType ENUM('single', 'double', 'twin') NOT NULL,
-	BedType ENUM('twin', 'twin XL', 'double', 'queen', 'king', 'CA king') NOT NULL,
-	BedCount TINYINT UNSIGNED NOT NULL,
-	Decor ENUM('Modern', 'Industrial', 'Nautical', 'Scandinavian', 'Bohemian', 'Rustic') NOT NULL,
-	Price FLOAT NOT NULL,
-	PRIMARY KEY (RoomId)
-);
+	Occupants TINYINT UNSIGNED NOT NULL,
+   	PRIMARY KEY (ReservationId, RoomId),
+   	FOREIGN KEY (ReservationId) REFERENCES Reservation(ReservationId),
+	FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
+)
 
-DROP TABLE User IF EXISTS;
-CREATE TABLE User(
-	UserId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	FirstName VARCHAR(50) NOT NULL,
-	LastName VARCHAR(50) NOT NULL,
-	username VARCHAR(50) NOT NULL UNIQUE,
-	password VARCHAR(50) NOT NULL, 
-	type ENUM('manager', 'customer') NOT NULL, 
-	PRIMARY KEY (UserId)
-);
-
-DROP TABLE CreditCard IF EXISTS;
-CREATE TABLE CreditCard(
-	CardId BIGINT UNSIGNED NOT NULL,
-	balance FLOAT NOT NULL,
-	climit FLOAT  NOT NULL,
-	PRIMARY KEY (CardId)
-);
-
-DROP TABLE Reservation IF EXISTS;
+DROP TABLE Reservation;
 CREATE TABLE Reservation(
 	ReservationId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	UserId INT UNSIGNED NOT NULL,
@@ -41,12 +20,37 @@ CREATE TABLE Reservation(
 	FOREIGN KEY (CardId) REFERENCES CreditCard(CardId)
 );
 
-DROP TABLE RoomsReserved IF EXISTS;
-CREATE TABLE RoomsReserved(
-	ReservationId INT UNSIGNED NOT NULL, 
+DROP TABLE Room;
+CREATE TABLE Room (
 	RoomId INT UNSIGNED NOT NULL,
-	Occupants TINYINT UNSIGNED NOT NULL,
-   	PRIMARY KEY (ReservationId, RoomId),
-   	FOREIGN KEY (ReservationId) REFERENCES Reservation(ReservationId),
-	FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
-)
+	MaxOccupancy TINYINT UNSIGNED NOT NULL,
+	RoomType ENUM('single', 'double', 'twin') NOT NULL,
+	BedType ENUM('twin', 'twin XL', 'double', 'queen', 'king', 'CA king') NOT NULL,
+	BedCount TINYINT UNSIGNED NOT NULL,
+	Decor ENUM('Modern', 'Industrial', 'Nautical', 'Scandinavian', 'Bohemian', 'Rustic') NOT NULL,
+	Price FLOAT NOT NULL,
+	PRIMARY KEY (RoomId)
+);
+
+DROP TABLE User;
+CREATE TABLE User(
+	UserId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	FirstName VARCHAR(50) NOT NULL,
+	LastName VARCHAR(50) NOT NULL,
+	username VARCHAR(50) NOT NULL UNIQUE,
+	password VARCHAR(50) NOT NULL, 
+	type ENUM('manager', 'customer') NOT NULL, 
+	PRIMARY KEY (UserId)
+);
+
+DROP TABLE CreditCard;
+CREATE TABLE CreditCard(
+	CardId BIGINT UNSIGNED NOT NULL,
+	balance FLOAT NOT NULL,
+	climit FLOAT  NOT NULL,
+	PRIMARY KEY (CardId)
+);
+
+
+
+
