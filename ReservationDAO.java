@@ -58,7 +58,7 @@ public class ReservationDAO implements Dao<Reservation>{
    }
    @Override
    public Set<Reservation> getAll() {
-      Set<Reservation> resrvations = null;
+      Set<Reservation> reservations = null;
       PreparedStatement preparedStatement = null;
       ResultSet resultSet = null;
       try {

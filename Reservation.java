@@ -19,7 +19,7 @@ public class Reservation{
 
    @Override
    public String toString(){
-      return "reservation(reservationId=" + reservationId + ", userId=" + userId + ", cardId=" + cardId.name()
+      return "reservation(reservationId=" + reservationId + ", userId=" + userId + ", cardId=" + cardId
       + ", checkIn=" + checkIn.toString() + ", checkOut=" + checkOut.toString() + ')';
 
    }
