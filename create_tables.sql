@@ -6,7 +6,7 @@ CREATE TABLE RoomsReserved(
    	PRIMARY KEY (ReservationId, RoomId),
    	FOREIGN KEY (ReservationId) REFERENCES Reservation(ReservationId),
 	FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
-)
+);
 
 DROP TABLE Reservation;
 CREATE TABLE Reservation(
