@@ -1,26 +1,4 @@
-DROP TABLE RoomsReserved;
-CREATE TABLE RoomsReserved(
-	ReservationId INT UNSIGNED NOT NULL, 
-	RoomId INT UNSIGNED NOT NULL,
-	Occupants TINYINT UNSIGNED NOT NULL,
-   	PRIMARY KEY (ReservationId, RoomId),
-   	FOREIGN KEY (ReservationId) REFERENCES Reservation(ReservationId),
-	FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
-);
 
-DROP TABLE Reservation;
-CREATE TABLE Reservation(
-	ReservationId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	UserId INT UNSIGNED NOT NULL,
-	CardId BIGINT UNSIGNED NOT NULL,
-	CheckIn DATE NOT NULL,
-	CheckOut DATE NOT NULL,
-	PRIMARY KEY (ReservationId),
-	FOREIGN KEY (UserId) REFERENCES User(UserId),
-	FOREIGN KEY (CardId) REFERENCES CreditCard(CardId)
-);
-
-DROP TABLE Room;
 CREATE TABLE Room (
 	RoomId INT UNSIGNED NOT NULL,
 	MaxOccupancy TINYINT UNSIGNED NOT NULL,
@@ -32,7 +10,6 @@ CREATE TABLE Room (
 	PRIMARY KEY (RoomId)
 );
 
-DROP TABLE User;
 CREATE TABLE User(
 	UserId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	FirstName VARCHAR(50) NOT NULL,
@@ -43,7 +20,6 @@ CREATE TABLE User(
 	PRIMARY KEY (UserId)
 );
 
-DROP TABLE CreditCard;
 CREATE TABLE CreditCard(
 	CardId BIGINT UNSIGNED NOT NULL,
 	balance FLOAT NOT NULL,
@@ -51,6 +27,22 @@ CREATE TABLE CreditCard(
 	PRIMARY KEY (CardId)
 );
 
+CREATE TABLE Reservation(
+	ReservationId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	UserId INT UNSIGNED NOT NULL,
+	CardId BIGINT UNSIGNED NOT NULL,
+	CheckIn DATE NOT NULL,
+	CheckOut DATE NOT NULL,
+	PRIMARY KEY (ReservationId),
+	FOREIGN KEY (UserId) REFERENCES User(UserId),
+	FOREIGN KEY (CardId) REFERENCES CreditCard(CardId)
+);
 
-
-
+CREATE TABLE RoomsReserved(
+	ReservationId INT UNSIGNED NOT NULL, 
+	RoomId INT UNSIGNED NOT NULL,
+	Occupants TINYINT UNSIGNED NOT NULL,
+   	PRIMARY KEY (ReservationId, RoomId),
+   	FOREIGN KEY (ReservationId) REFERENCES Reservation(ReservationId),
+	FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
+);

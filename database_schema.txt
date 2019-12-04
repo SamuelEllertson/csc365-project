@@ -1,5 +1,5 @@
 Room
-RoomId 	int	primary key
+__RoomId__ 	int	primary key
 MaxOccupancy	tinyint
 RoomType	enum('single', 'double', 'twin')
 BedType		enum('twin', 'twin XL,' 'double', 'queen', 'king', 'CA king')
@@ -8,20 +8,20 @@ Decor		enum('Modern', 'Industrial', 'Nautical', 'Scandinavian', 'Bohemian', 'Rus
 Price		float
 
 Reservation
-ReservationId int	primary key
-UserId		int	references User.UserId
-CardId		bigint	references CreditCard.CardId
+__ReservationId__ int	primary key
+UserId		int	references User.__UserId__
+CardId		bigint	references CreditCard.__CardId__
 CheckIn		date
 CheckOut	date
 Occupants	tinyint
 
 -- there can be multiple rooms reserved for one reservation, so we need a separate table
 RoomsReserved
-ReservationId	int	references Reservation.ReservationId
-RoomId		int	references Room.RoomId
+ReservationId	int	references Reservation.__ReservationId__
+RoomId		int	references Room.__RoomId__
 
 User
-UserId	int	primary key
+__UserId__	int	primary key
 FirsName	varchar
 LastName	varchar
 username	varchar
@@ -29,6 +29,6 @@ password	varchar  --Ignoring security; This is a class assignment, not a product
 type		enum('manager', 'normal')
 
 CreditCard
-CardId	bigint	primary key
+__CardId__	bigint	primary key
 balance		float
 climit		float
