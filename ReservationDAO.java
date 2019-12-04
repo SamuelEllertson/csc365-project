@@ -129,8 +129,8 @@ public class ReservationDAO implements Dao<Reservation>{
          rs.getInt("ReservationId"),
          rs.getInt("UserId"),
          rs.getLong("CardId"),
-         rs.getString("CheckIn"),
-         rs.getInt("CheckOut"));
+         rs.getDate("CheckIn"),
+         rs.getDate("CheckOut"));
          reservations.add(reservation);
       }
       return reservations;
