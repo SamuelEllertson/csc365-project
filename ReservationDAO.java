@@ -88,7 +88,6 @@ public class ReservationDAO implements Dao<Reservation>{
       return reservations;
    }
 
-   //Never used since we are not creating new rooms.
    @Override
    public Boolean insert(Reservation obj) {
       return null;
@@ -115,7 +114,6 @@ public class ReservationDAO implements Dao<Reservation>{
       return true;
    }
 
-   //Never used since we are never deleting rooms.
    @Override
    public Boolean delete(Reservation obj) {
       return null;
