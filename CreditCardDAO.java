@@ -51,10 +51,9 @@ public class CreditCardDAO implements Dao<CreditCard>{
          catch(SQLException e){
             e.printStackTrace();
          }   
-
-         return credCard;
-
       }
+      
+      return credCard;
    }
    @Override
    public Set<CreditCard> getAll() {
@@ -90,7 +89,22 @@ public class CreditCardDAO implements Dao<CreditCard>{
 
    @Override
    public Boolean insert(CreditCard obj) {
-      return null;
+      try {
+            PreparedStatement preparedStatement = this.conn.prepareStatement(
+                "INSERT INTO CreditCard (CardId, balance, climit) VALUES (?, ?, ?);"
+            );
+            preparedStatement.setLong(1, obj.cardId);
+            preparedStatement.setFloat(2, obj.balance);
+            preparedStatement.setFloat(3, obj.climit);
+
+            preparedStatement.execute();
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
    }
 
    @Override
@@ -101,7 +115,8 @@ public class CreditCardDAO implements Dao<CreditCard>{
          );
          preparedStatement.setFloat(1, obj.balance);
          preparedStatement.setFloat(2,obj.climit);
-         preparedStatement.setLong(3,obj.CardId);
+         preparedStatement.setLong(3, obj.cardId);
+
          preparedStatement.execute();
       } 
       catch (SQLException e) {
@@ -111,7 +126,6 @@ public class CreditCardDAO implements Dao<CreditCard>{
       return true;
    }
 
-   //Never used since we are never deleting rooms.
    @Override
    public Boolean delete(CreditCard obj) {
       return null;
@@ -122,11 +136,14 @@ public class CreditCardDAO implements Dao<CreditCard>{
 
       while(rs.next()) {
          CreditCard credCard = new CreditCard(
-         rs.getLong("CardId"),
-         rs.getFloat("balance"),
-         rs.getFloat("climit"));
+            rs.getLong("CardId"),
+            rs.getFloat("balance"),
+            rs.getFloat("climit")
+         );
+
          credCards.add(credCard);
       }
+      
       return credCards;
    }
 }

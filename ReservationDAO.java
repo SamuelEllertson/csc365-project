@@ -50,12 +50,12 @@ public class ReservationDAO implements Dao<Reservation>{
          }
          catch(SQLException e){
             e.printStackTrace();
-         }   
-
-         return reservation;
-
+         }
       }
+
+      return reservation;
    }
+
    @Override
    public Set<Reservation> getAll() {
       Set<Reservation> reservations = null;
@@ -93,7 +93,6 @@ public class ReservationDAO implements Dao<Reservation>{
       return null;
    }
 
-   //Never used since we are not updating old rooms.
    @Override
    public Boolean update(Reservation obj) {
       try {
@@ -105,6 +104,7 @@ public class ReservationDAO implements Dao<Reservation>{
          preparedStatement.setDate(3,obj.checkIn);
          preparedStatement.setDate(4,obj.checkOut);
          preparedStatement.setInt(5,obj.reservationId);
+         
          preparedStatement.execute();
       } 
       catch (SQLException e) {

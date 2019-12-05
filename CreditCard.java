@@ -6,10 +6,16 @@ public class CreditCard {
 	public float climit;
 
 	public CreditCard(long cardId, float balance, float climit) {
-		this.cardId = cardId;
-		this.balance = balance;
-		this.climit = climit;
-	}
+        this.cardId = cardId;
+        this.balance = balance;
+        this.climit = climit;
+    }
+
+    public CreditCard(long cardId, double balance, double climit) {
+        this.cardId = cardId;
+        this.balance = (float)balance;
+        this.climit = (float)climit;
+    }
 
 	@Override
    public String toString() {

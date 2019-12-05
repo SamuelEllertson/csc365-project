@@ -1,6 +1,6 @@
 TARGET   = Main
 JC       = javac
-JCFLAGS  = -classpath 'mysql-connector.jar;.' -Xlint:deprecation
+JCFLAGS  = -classpath 'mysql-connector.jar;.' -Xlint:deprecation -Xlint:all
 JVM      = java
 JVMFLAGS = -classpath 'mysql-connector.jar;.'
 SOURCES  = *.java

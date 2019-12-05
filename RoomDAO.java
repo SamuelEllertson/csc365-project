@@ -41,7 +41,7 @@ public class RoomDAO implements Dao<Room>{
          } 
          catch(SQLException e){
             e.printStackTrace();
-         }      
+         }
 
          try{
             if(preparedStatement != null){
@@ -51,11 +51,11 @@ public class RoomDAO implements Dao<Room>{
          catch(SQLException e){
             e.printStackTrace();
          }   
-
-         return room;
-
       }
+      
+      return room;
    }
+
    @Override
    public Set<Room> getAll() {
       Set<Room> rooms = null;
