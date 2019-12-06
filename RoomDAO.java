@@ -8,9 +8,11 @@ import java.util.Set;
 public class RoomDAO implements Dao<Room>{
 
    private Connection conn;
+   private Controller controller;
 
-   public RoomDAO(Connection conn){
+   public RoomDAO(Connection conn, Controller controller){
       this.conn = conn;
+      this.controller = controller;
    }
    
    @Override

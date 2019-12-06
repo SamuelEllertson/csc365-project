@@ -8,9 +8,11 @@ import java.util.Set;
 public class UserDAO implements Dao<User>{
 
    private Connection conn;
+   private Controller controller;
 
-   public UserDAO(Connection conn){
+   public UserDAO(Connection conn, Controller controller){
       this.conn = conn;
+      this.controller = controller;
    }
    
    @Override

@@ -42,17 +42,17 @@ public class Main{
         View view = new View(controller);
         controller.view = view;
 
-        /*
+        
         //Testing stuff
         //User steve = new User(4, "Steve", "Lee", "stevo", "pass123", "CUSTOMER");
-        CreditCard cc = new CreditCard(3, 30.0, 500.0);
+        //CreditCard cc = new CreditCard(3, 30.0, 500.0);
 
         //System.out.println(controller.userDAO.update(steve));
-        System.out.println(controller.creditCardDAO.insert(cc));
+        //System.out.println(controller.creditCardDAO.insert(cc));
 
         //System.out.println(controller.userDAO.getAll());
         System.out.println(controller.creditCardDAO.getAll());
-        */
+        
         view.doUILoop();
     }
 }

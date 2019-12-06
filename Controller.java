@@ -14,10 +14,10 @@ public class Controller{
     public Controller(ConnectionFactory cf){
         this.connectionFactory = cf;
 
-        this.roomDAO = new RoomDAO(cf.getConnection());
-        this.userDAO = new UserDAO(cf.getConnection());
-        this.creditCardDAO = new CreditCardDAO(cf.getConnection());
-        //this.reservationDAO = new ReservationDAO(cf.getConnection());
+        this.roomDAO = new RoomDAO(cf.getConnection(), this);
+        this.userDAO = new UserDAO(cf.getConnection(), this);
+        this.creditCardDAO = new CreditCardDAO(cf.getConnection(), this);
+        //this.reservationDAO = new ReservationDAO(cf.getConnection(), this);
     }
 
     //implements issue #5

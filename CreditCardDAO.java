@@ -8,9 +8,11 @@ import java.util.Set;
 public class CreditCardDAO implements Dao<CreditCard>{
 
    private Connection conn;
+   private Controller controller;
 
-   public CreditCardDAO(Connection conn){
+   public CreditCardDAO(Connection conn, Controller controller){
       this.conn = conn;
+      this.controller = controller;
    }
    
    @Override

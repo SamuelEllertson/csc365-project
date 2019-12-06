@@ -8,9 +8,11 @@ import java.util.Set;
 public class ReservationDAO implements Dao<Reservation>{
 
    private Connection conn;
+   private Controller controller;
 
-   public ReservationDAO(Connection conn){
+   public ReservationDAO(Connection conn, Controller controller){
       this.conn = conn;
+      this.controller = controller;
    }
    
    @Override
