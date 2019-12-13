@@ -3,10 +3,12 @@ import java.util.Set;
 
 public class UserView extends View{
    ReservationsView reservationsView;
+   BookView bookView;
 
    public UserView(Controller controller) {
        super(controller);
        reservationsView = new ReservationsView(controller, input);
+       bookView = new BookView(input, controller);
    }
 
    public void PrintMenuItems(){
@@ -53,7 +55,7 @@ public class UserView extends View{
         String in = input.nextLine();
 
         switch(in) {
-            case("1"): /* Book Reservation */ break;
+            case("1"): bookView.showBookView(user.userId); break;
             case("2"): reservationsView.viewReservations(user.userId); break;
             case("3"): reservationsView.editReservation(user.userId); break;
             case("4"): reservationsView.cancelReservation(user.userId); break;
