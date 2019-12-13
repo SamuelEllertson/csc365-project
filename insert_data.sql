@@ -1,4 +1,5 @@
---Users
+-- Users
+/*
 INSERT INTO User(FirstName, LastName, username, password, type)
    VALUES('John', 'Doe', 'admin', 'admin', 'MANAGER');
 
@@ -7,8 +8,8 @@ INSERT INTO User(FirstName, LastName, username, password, type)
 
 INSERT INTO User(FirstName, LastName, username, password, type)
    VALUES('Mary', 'Sue', 'msue76', 'p@$$w0rD', 'CUSTOMER');
-
---Rooms
+*/
+-- Rooms
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (101, 1, 'SINGLE', 'TWIN', 1, 'RUSTIC', 75.25);
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (102, 1, 'SINGLE', 'TWIN_XL', 1, 'MODERN', 80.02);
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (103, 3, 'DOUBLE', 'QUEEN', 1, 'MODERN', 94);
@@ -37,19 +38,20 @@ INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Pric
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (405, 2, 'TWIN', 'TWIN_XL', 2, 'BOHEMIAN', 98.6);
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (406, 6, 'TWIN', 'QUEEN', 2, 'NAUTICAL', 106);
 
---Credit Cards
+-- Credit Cards
+/*
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(1, 0, 10000);
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(2, 0, 100000);
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(3, 0, 1500);
-
---Reservations
+*/
+-- Reservations
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(2, 1, '2019-11-22', '2019-11-24');
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(3, 2, '2019-11-29', '2019-12-01');
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(3, 2, '2019-12-15', '2019-12-18');
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(3, 3, '2019-12-09', '2019-12-10');
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(2, 1, '2019-12-12', '2019-12-16');
 
---Rooms Reserved
+-- Rooms Reserved
 INSERT INTO RoomsReserved(ReservationId, RoomId, Occupants) VALUES(1, 104, 4);
 INSERT INTO RoomsReserved(ReservationId, RoomId, Occupants) VALUES(1, 105, 2);
 INSERT INTO RoomsReserved(ReservationId, RoomId, Occupants) VALUES(2, 302, 2);
