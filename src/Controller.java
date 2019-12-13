@@ -1,4 +1,8 @@
-
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.sql.Date;
 public class Controller{
 
     public ConnectionFactory connectionFactory;
@@ -70,4 +74,19 @@ public class Controller{
     }
 
 
+
+
 }
+
+/*      while(rs.next()) {
+         Room room = new Room(
+         rs.getInt("RoomId"),
+         rs.getInt("MaxOccupancy"),
+         rs.getString("RoomType"),
+         rs.getString("BedType"),
+         rs.getInt("BedCount"),
+         rs.getString("Decor"),
+         rs.getFloat("Price"));
+         rooms.add(room);
+      }
+      return rooms;*/
