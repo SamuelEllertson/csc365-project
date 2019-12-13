@@ -83,7 +83,6 @@ public class BookView {
         while(searchAgain) {
             getQueryDay();
             getQueryOcc();
-            getOccupants();
             getPriceRange();
             getType();
             getBedType();
