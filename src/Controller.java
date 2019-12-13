@@ -10,8 +10,10 @@ public class Controller{
     public CreditCardDAO creditCardDAO;
     public ReservationDAO reservationDAO;
     public RoomsReservedDAO roomsReservedDAO;
+
     public Controller(ConnectionFactory cf){
         this.connectionFactory = cf;
+
         this.roomDAO = new RoomDAO(cf.getConnection(), this);
         this.userDAO = new UserDAO(cf.getConnection(), this);
         this.creditCardDAO = new CreditCardDAO(cf.getConnection(), this);

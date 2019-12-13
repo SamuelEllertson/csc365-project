@@ -3,6 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=eclipse
 
 *.class
+.DS_Store
 
 #Do not remove: Keeps credentials off of github
 credential.xml
