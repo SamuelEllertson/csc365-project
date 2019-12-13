@@ -9,14 +9,14 @@ public class Controller{
     public UserDAO userDAO;
     public CreditCardDAO creditCardDAO;
     public ReservationDAO reservationDAO;
-
+    public RoomsReservedDAO roomsReservedDAO;
     public Controller(ConnectionFactory cf){
         this.connectionFactory = cf;
-
         this.roomDAO = new RoomDAO(cf.getConnection(), this);
         this.userDAO = new UserDAO(cf.getConnection(), this);
         this.creditCardDAO = new CreditCardDAO(cf.getConnection(), this);
         this.reservationDAO = new ReservationDAO(cf.getConnection(), this);
+        this.roomsReservedDAO = new RoomsReservedDAO(cf.getConnection(), this);
     }
 
     //implements issue #5
