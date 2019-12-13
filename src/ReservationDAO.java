@@ -225,7 +225,7 @@ public class ReservationDAO implements Dao<Reservation>{
          PreparedStatement preparedStatement = this.conn.prepareStatement(
                  "DELETE FROM Reservation WHERE ReservationId=?"
          );
-         preparedStatement.setInt(1, obj.userId);
+         preparedStatement.setInt(1, obj.reservationId);
 
          preparedStatement.execute();
       }

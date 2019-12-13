@@ -1,4 +1,6 @@
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -24,7 +26,7 @@ public class ReservationsView {
         System.out.println("");
     }
 
-    private void editDate(Reservation res) {
+    private void editDate(Reservation res, Object[] roomsRes) {
         String checkIn, checkOut;
         boolean correctInput;
         Reservation resCpy = new Reservation(res.reservationId, res.userId, res.cardId, res.checkIn, res.checkOut);
@@ -52,12 +54,24 @@ public class ReservationsView {
             }
         }while(!correctInput);
 
-        // Check rooms are available for new dates !!
+        // Check rooms are available for new dates
+        Set<Room> occupiedRooms = controller.roomDAO.getOccupiedRoomsOnDateRange(resCpy.checkIn, resCpy.checkOut);
+        if (occupiedRooms != null) {
+            for (Object rr : roomsRes) {
+                for (Room r : occupiedRooms) {
+                    if (((RoomsReserved) rr).roomId == r.roomId) {
+                        System.out.printf("Room(s) already occupied within new date range");
+                        return;
+                    }
+                }
+            }
+        }
 
-        if (resCpy.checkIn.after(resCpy.checkOut) || !controller.reservationDAO.update(resCpy)) {
+        if (occupiedRooms == null || resCpy.checkIn.after(resCpy.checkOut) || !controller.reservationDAO.update(resCpy)) {
             System.out.println("FAILED: Could not update dates\n");
             return;
         }
+
         res = resCpy;
         System.out.println("Successfully updated: New dates are " + res.checkIn + " to " + res.checkOut + "\n");
     }
@@ -150,7 +164,7 @@ public class ReservationsView {
         int num = 1;
         System.out.println("All reservations with dates: ");
         for (Object res:reservs) {
-            System.out.println(num + ") " + ((Reservation) res).checkIn + " to " + ((Reservation) res).checkOut);
+            System.out.println("Reservation " + num + ") " + ((Reservation) res).checkIn + " to " + ((Reservation) res).checkOut);
             num++;
         }
         int resNum = 0;
@@ -188,7 +202,7 @@ public class ReservationsView {
         while (!correctInput) {
             correctInput = true;
             switch(in) {
-                case("1"): editDate(editRes); break;
+                case("1"): editDate(editRes, roomsRes); break;
                 case("2"): editRoom(editRes, roomsRes); break;
                 case("3"): return;
                 default:
@@ -211,7 +225,7 @@ public class ReservationsView {
         int num = 1;
         System.out.println("All reservations with dates: ");
         for (Object res:reservs) {
-            System.out.println(num + ") " + ((Reservation) res).checkIn + " to " + ((Reservation) res).checkOut);
+            System.out.println("Reservation " + num + ") " + ((Reservation) res).checkIn + " to " + ((Reservation) res).checkOut);
             num++;
         }
         int resNum = 0;
@@ -228,24 +242,15 @@ public class ReservationsView {
                 correctInput = false;
             }
         }while(!correctInput);
+
         Reservation cancelRes = (Reservation)reservs[resNum - 1];
         Set<RoomsReserved> roomsReserved = controller.roomsReservedDAO.getByReservationId(cancelRes.reservationId);
         Object[] roomsRes = roomsReserved.toArray();
 
-        // Make transaction !!
-        // Remove from RoomsReserved
-        for (RoomsReserved rRes:roomsReserved) {
-            if (!controller.roomsReservedDAO.delete(rRes)) {
-                System.out.println("FAILED: Could not cancel reservation");
-                return;
-            }
-        }
-        // Remove from Reservation
-        if (!controller.reservationDAO.delete(cancelRes)) {
-            System.out.println("FAILED: Could not cancel reservation");
+        // Transaction
+        if (!controller.cancelReservation(roomsReserved, cancelRes)) {
             return;
         }
-        // Refund !!
 
         // Display reservation info after deleted
         System.out.println("\nSuccessfully cancelled reservation:\nreservationId: " + cancelRes.reservationId + "\ncardId: "
@@ -254,7 +259,7 @@ public class ReservationsView {
         System.out.println("Rooms: ");
         for (Object rr:roomsRes) {
             System.out.println(num + ") RoomId: " + ((RoomsReserved)rr).roomId + ", occupants: "
-                    + ((RoomsReserved)rr).occupants);
+                    + ((RoomsReserved)rr).occupants + "\n");
             num++;
         }
 

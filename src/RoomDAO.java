@@ -138,6 +138,47 @@ public class RoomDAO implements Dao<Room>{
       }
       return rooms;
    }
+   public Set<Room> getOccupiedRoomsOnDateRange(Date checkIn, Date checkOut) {
+      PreparedStatement preparedStatement = null;
+      ResultSet resultSet = null;
+      Set<Room> rooms = null;
+      try{
+         preparedStatement = this.conn.prepareStatement(
+                 " SELECT * FROM Room WHERE roomId IN " +
+                         "(SELECT roomId FROM RoomsReserved WHERE reservationId IN " +
+                         "(SELECT reservationId FROM Reservation WHERE " +
+                         "? < CheckIn AND ? > CheckOut));"
+         );
+         preparedStatement.setDate(1,checkIn);
+         preparedStatement.setDate(2,checkOut);
+         resultSet = preparedStatement.executeQuery();
+
+         rooms = unpackResultSet(resultSet);
+      }
+      catch (SQLException e){
+         e.printStackTrace();
+      }
+      finally{
+         try{
+            if(resultSet!=null){
+               resultSet.close();
+            }
+         }
+         catch(SQLException e){
+            e.printStackTrace();
+         }
+         try{
+            if(preparedStatement != null){
+               preparedStatement.close();
+            }
+         }
+         catch(SQLException e){
+            e.printStackTrace();
+         }
+      }
+
+      return rooms;
+   }
 
    public Set<Room> getAvailableRooms(Date checkIn, Date checkOut, int numOccupants, float minPrice, float maxPrice,
                                       String rType, String bType, String decor){

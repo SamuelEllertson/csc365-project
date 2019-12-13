@@ -95,8 +95,53 @@ public class Controller{
 
     //implements issue #6
     //returns true on success, false on failure
-    public boolean CancelReservation(){
-        return false;
+    public boolean cancelReservation(Set<RoomsReserved> roomsReserved, Reservation res){
+        // start transaction
+        Connection conn = connectionFactory.getConnection();
+
+        try{
+            conn.setAutoCommit(false);
+            // Remove from RoomsReserved
+            for (RoomsReserved rRes : roomsReserved) {
+                if (!roomsReservedDAO.delete(rRes)) {
+                    System.out.println("FAILED: Could not cancel reservation");
+                    return false;
+                }
+            }
+            // Remove from Reservation
+            if (!reservationDAO.delete(res)) {
+                System.out.println("FAILED: Could not cancel reservation");
+                return false;
+            }
+            // Refund !!
+
+            try {
+                conn.commit();
+            }catch(SQLException e){
+                try {
+                    System.out.println("Transaction Error");
+                    conn.rollback();
+                    return false;
+                } catch(SQLException c){
+                    c.printStackTrace();
+                    return false;
+                }
+
+            }
+        }catch(SQLException e){
+            try {
+                System.out.println("Transaction Error");
+                conn.rollback();
+                return false;
+            } catch(SQLException c){
+                c.printStackTrace();
+                return false;
+            }
+
+        }
+
+        //end transaction
+        return true;
     }
 
     //implements issue #7
@@ -134,9 +179,6 @@ public class Controller{
     public boolean RevenueOverview(){
         return false;
     }
-
-
-
 
 }
 
