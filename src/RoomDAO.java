@@ -146,7 +146,7 @@ public class RoomDAO implements Dao<Room>{
       ResultSet resultSet = null;
       Set<Room>  rooms ;
       int arr [] = new int[8];
-      Object args[] = {checkIn,checkOut,(Integer)numOccupants,(Float)minPrice,(Float)maxPrice,rType,bType,decor};
+      Object args[] = {(Integer)numOccupants, checkIn, checkOut, (Float)minPrice, (Float)maxPrice, rType, bType, decor};
       int i = 1;
       StringBuilder queryString = new StringBuilder(
               "SELECT distinct room.RoomId as RoomId, room.MaxOccupancy as MaxOccupancy, room.RoomType as RoomType, "
@@ -173,38 +173,43 @@ public class RoomDAO implements Dao<Room>{
          );
          arr[1] = i;
          i++;
+         arr[2] = i;
+         i++;
       }
 
       if(minPrice!=0 && maxPrice!=0 ){
          queryString.append(" AND ( room.Price BETWEEN ? AND ?)");
-         arr[0] = i;
+         arr[3] = i;
+         i++;
+         arr[4] = i;
          i++;
       }
 
       if(rType.length()>0){
          queryString.append(" AND (room.RoomType = ?)");
-         arr[0] = i;
+         arr[5] = i;
          i++;
       }
 
       if(bType.length()>0){
          queryString.append(" AND (room.BedType = ?)");
-         arr[0] = i;
+         arr[6] = i;
          i++;
       }
 
       if(decor.length()>0){
          queryString.append(" AND (room.Decor = ?)");
-         arr[0] = i;
+         arr[7] = i;
          i++;
       }
 
+      System.out.println(queryString.toString());
       try {
          preparedStatement = conn.prepareStatement(
                  queryString.toString()
          );
 
-         for(int j = 0;i < args.length; j++){
+         for(int j = 0; j < args.length; j++){
             if(arr[j]!=0){
                preparedStatement.setString(arr[j],args[j].toString());
             }
