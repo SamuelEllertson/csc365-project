@@ -68,5 +68,4 @@ public class UserView extends View{
          }
       }
    }
-
 }

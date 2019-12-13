@@ -63,7 +63,7 @@ public class ReservationDAO implements Dao<Reservation>{
       PreparedStatement preparedStatement = null;
       ResultSet resultSet = null;
       try {
-         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE UserId=?");
+         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE UserId=? ORDER BY CheckIn, CheckOut");
          preparedStatement.setInt(1, userId);
          resultSet = preparedStatement.executeQuery();
          reservations = unpackResultSet(resultSet);
@@ -222,20 +222,19 @@ public class ReservationDAO implements Dao<Reservation>{
 
    @Override
    public Boolean delete(Reservation obj) {
-      Boolean success;
       try {
          PreparedStatement preparedStatement = this.conn.prepareStatement(
                  "DELETE FROM Reservation WHERE ReservationId=?"
          );
-         preparedStatement.setInt(1, obj.userId);
+         preparedStatement.setInt(1, obj.reservationId);
 
-         success = preparedStatement.execute();
+         preparedStatement.execute();
       }
       catch (SQLException e) {
          e.printStackTrace();
-         success = false;
+         return false;
       }
-      return success;
+      return true;
    }
 
    private Set<Reservation> unpackResultSet(ResultSet rs) throws SQLException {
