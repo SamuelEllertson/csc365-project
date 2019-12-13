@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,6 +136,106 @@ public class RoomDAO implements Dao<Room>{
          rs.getFloat("Price"));
          rooms.add(room);
       }
+      return rooms;
+   }
+
+   public Set<Room> getAvailableRooms(Date checkIn, Date checkOut, int numOccupants, float minPrice, float maxPrice,
+                                      String rType, String bType, String decor){
+
+      PreparedStatement preparedStatement = null;
+      ResultSet resultSet = null;
+      Set<Room>  rooms ;
+      int arr [] = new int[8];
+      Object args[] = {checkIn,checkOut,(Integer)numOccupants,(Float)minPrice,(Float)maxPrice,rType,bType,decor};
+      int i = 1;
+      StringBuilder queryString = new StringBuilder(
+              "SELECT distinct room.RoomId as RoomId, room.MaxOccupancy as MaxOccupancy, room.RoomType as RoomType, "
+      );
+      queryString.append(
+              "room.BedType as BedType,  room.BedCount as BedCount, room.Decor as Decor, room.Price as Price "
+      );
+      queryString.append(
+              "FROM Room room LEFT JOIN RoomsReserved rr on room.RoomId = rr.RoomId LEFT JOIN Reservation res on res.ReservationId = rr.ReservationId "
+      );
+      queryString.append(
+              "WHERE (room.Price > 0)"
+      );
+      if(numOccupants>0){
+         queryString.append(
+                 "AND (room.MaxOccupancy >= ?) "
+         );
+         arr[0] = i;
+         i++;
+      }
+      if(checkIn!=null && checkOut!=null){
+         queryString.append(
+                 "AND (res.CheckIn >= ? OR res.Checkout <= ? OR res.CheckIn is null OR res.CheckOut is null)"
+         );
+         arr[1] = i;
+         i++;
+      }
+
+      if(minPrice!=0 && maxPrice!=0 ){
+         queryString.append(" AND ( room.Price BETWEEN ? AND ?)");
+         arr[0] = i;
+         i++;
+      }
+
+      if(rType.length()>0){
+         queryString.append(" AND (room.RoomType = ?)");
+         arr[0] = i;
+         i++;
+      }
+
+      if(bType.length()>0){
+         queryString.append(" AND (room.BedType = ?)");
+         arr[0] = i;
+         i++;
+      }
+
+      if(decor.length()>0){
+         queryString.append(" AND (room.Decor = ?)");
+         arr[0] = i;
+         i++;
+      }
+
+      try {
+         preparedStatement = conn.prepareStatement(
+                 queryString.toString()
+         );
+
+         for(int j = 0;i < args.length; j++){
+            if(arr[j]!=0){
+               preparedStatement.setString(arr[j],args[j].toString());
+            }
+         }
+
+         resultSet = preparedStatement.executeQuery();
+         rooms = unpackResultSet(resultSet);
+
+      }
+      catch (SQLException e) {
+         e.printStackTrace();
+         return null;
+      }
+
+      finally {
+         try {
+            if (resultSet != null)
+               resultSet.close();
+         }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+         try {
+            if (preparedStatement != null)
+               preparedStatement.close();
+         }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+
       return rooms;
    }
 }
