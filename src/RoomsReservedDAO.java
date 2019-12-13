@@ -2,8 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class RoomsReservedDAO implements Dao<RoomsReserved>{
 
@@ -48,6 +47,157 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
         return res;
     }
 
+    public Map<String, Integer> getMonthlyRevenue(){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<String, Integer> monthlyRevenue = new HashMap<>();
+        try {
+
+            preparedStatement = this.conn.prepareStatement(
+                    "SELECT MONTHNAME(CONCAT('2011-', month, '-01')) AS month, revenue FROM(\n" +
+                            "    SELECT\n" +
+                            "        DATE_FORMAT(re.CheckOut, \"%m\") AS month,\n" +
+                            "        SUM(DATEDIFF(re.CheckOut, re.CheckIn)*ro.Price) AS revenue\n" +
+                            "    FROM Reservation re\n" +
+                            "    JOIN RoomsReserved rr ON re.ReservationId = rr.ReservationId\n" +
+                            "    JOIN Room ro ON rr.RoomId = ro.RoomId\n" +
+                            "    GROUP BY month\n" +
+                            "    ORDER BY month\n" +
+                            ") AS M"
+            );
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String month = resultSet.getString("month");
+                int revenue = resultSet.getInt("revenue");
+                monthlyRevenue.put(month, revenue);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return monthlyRevenue;
+    }
+
+    public Map<String, Map<String, Integer>> getRoomsMonthlyRevenue(){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<String, Map<String, Integer>> roomMonthlyRevenue = new LinkedHashMap<>();
+        try {
+
+            preparedStatement = this.conn.prepareStatement(
+                    "SELECT RoomId FROM Room"
+            );
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Integer roomId = resultSet.getInt("RoomId");
+                Map<String, Integer> monthly = getMonthlyMap();
+                roomMonthlyRevenue.put(roomId.toString(), monthly);
+            }
+            resultSet.close();
+
+            preparedStatement = this.conn.prepareStatement(
+                    "SELECT RoomId, MONTHNAME(CONCAT('2011-', month, '-01')) AS month, revenue FROM(\n" +
+                            "    SELECT\n" +
+                            "        ro.RoomId,\n" +
+                            "        DATE_FORMAT(re.CheckOut, \"%m\") AS month,\n" +
+                            "        SUM(DATEDIFF(re.CheckOut, re.CheckIn)*ro.Price) AS revenue\n" +
+                            "    FROM Reservation re\n" +
+                            "    JOIN RoomsReserved rr ON re.ReservationId = rr.ReservationId\n" +
+                            "    JOIN Room ro ON rr.RoomId = ro.RoomId\n" +
+                            "    GROUP BY RoomId, month\n" +
+                            "    ORDER BY RoomId, month\n" +
+                            ") AS M"
+            );
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Integer roomId = resultSet.getInt("RoomId");
+                Map<String, Integer> monthly = roomMonthlyRevenue.get(roomId.toString());
+                String month = resultSet.getString("month");
+                int revenue = resultSet.getInt("revenue");
+                monthly.replace(month, revenue);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        addTotalColumn(roomMonthlyRevenue);
+        addTotalRow(roomMonthlyRevenue);
+        return roomMonthlyRevenue;
+    }
+
+    private Map<String, Integer> getMonthlyMap(){
+        Map<String, Integer> monthly = new LinkedHashMap<>();
+        monthly.put("January", 0);
+        monthly.put("February", 0);
+        monthly.put("March", 0);
+        monthly.put("April", 0);
+        monthly.put("May", 0);
+        monthly.put("June", 0);
+        monthly.put("July", 0);
+        monthly.put("August", 0);
+        monthly.put("September", 0);
+        monthly.put("October", 0);
+        monthly.put("November", 0);
+        monthly.put("December", 0);
+        return monthly;
+    }
+
+    private void addTotalColumn(Map<String, Map<String, Integer>> roomMonthlyRevenue){
+        for(String roomId: roomMonthlyRevenue.keySet()){
+            Map<String, Integer> monthly = roomMonthlyRevenue.get(roomId);
+            int total = 0;
+            for(String month: monthly.keySet()){
+                total += monthly.get(month);
+            }
+            monthly.put("total", total);
+        }
+    }
+
+    private void addTotalRow(Map<String, Map<String, Integer>> roomMonthlyRevenue){
+        Map<String, Integer> monthly = getMonthlyMap();
+        monthly.put("total", 0);
+        for(String roomId: roomMonthlyRevenue.keySet()){
+            Map<String, Integer> roomMonth = roomMonthlyRevenue.get(roomId);
+            for(String month: roomMonth.keySet()){
+                int current = monthly.get(month);
+                int total = current + roomMonth.get(month);
+                monthly.replace(month, total);
+            }
+        }
+        roomMonthlyRevenue.put("total", monthly);
+    }
 
     public Set<RoomsReserved> getByRoomId(int roomId){
         Set<RoomsReserved> res = null;

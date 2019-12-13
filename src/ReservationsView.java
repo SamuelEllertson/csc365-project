@@ -115,6 +115,7 @@ public class ReservationsView {
         }
     }
 
+
     /* 4) The system shall allow users to cancel bookings. (Upon the cancellation of a
      * reservation, the system shall display the details of the cancelled reservation
      * on the screen.)
