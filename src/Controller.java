@@ -1,5 +1,7 @@
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.sql.Date;
@@ -17,12 +19,72 @@ public class Controller{
 
     public Controller(ConnectionFactory cf){
         this.connectionFactory = cf;
-
         this.roomDAO = new RoomDAO(cf.getConnection(), this);
         this.userDAO = new UserDAO(cf.getConnection(), this);
         this.creditCardDAO = new CreditCardDAO(cf.getConnection(), this);
         this.reservationDAO = new ReservationDAO(cf.getConnection(), this);
         this.roomsReservedDAO = new RoomsReservedDAO(cf.getConnection(), this);
+    }
+
+    public boolean addReservations(Reservation res, HashMap<Room,Integer> rooms, float cost ){
+        //start transaction
+        Connection conn = connectionFactory.getConnection();
+        try{
+
+            conn.setAutoCommit(false);
+            reservationDAO.insert(res);
+
+            //first we add all the reservations, then we add all the rooms reserved, then we pay
+            Reservation reservation = reservationDAO.getByEverythingElse(res.userId, res.cardId, res.checkIn, res.checkOut);
+            Object roomsArr[] = rooms.keySet().toArray();
+
+            for (Object room : roomsArr) {
+
+                Room r = ((Room)room);
+                RoomsReserved roomsReserved = new RoomsReserved(res.reservationId,r.roomId, rooms.get(r));
+                roomsReservedDAO.insert(roomsReserved);
+
+            }
+
+            CreditCard cred = creditCardDAO.getByCardId(res.cardId);
+            if(cred.balance + cost < cred.climit){
+                cred.balance = cred.balance+cost;
+                creditCardDAO.update(cred);
+            }
+            else{
+                System.out.println("Not enough money");
+                throw new SQLException();
+            }
+
+
+            try {
+                conn.commit();
+            }catch(SQLException e){
+                try {
+                    System.out.println("Transaction Error");
+                    conn.rollback();
+                    return false;
+                } catch(SQLException c){
+                    c.printStackTrace();
+                    return false;
+                }
+
+            }
+
+        }catch(SQLException e){
+            try {
+                System.out.println("Transaction Error");
+                conn.rollback();
+                return false;
+            } catch(SQLException c){
+                c.printStackTrace();
+                return false;
+            }
+
+        }
+
+        //end transaction
+        return true;
     }
 
     //implements issue #5

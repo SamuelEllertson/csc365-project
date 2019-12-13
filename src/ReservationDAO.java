@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+import java.sql.Date;
 
 public class ReservationDAO implements Dao<Reservation>{
 
@@ -152,6 +153,51 @@ public class ReservationDAO implements Dao<Reservation>{
       return success;
    }
 
+
+   public Reservation getByEverythingElse(int userId, long cardId, Date checkIn, Date checkOut){
+
+      Reservation reservation = null;
+      PreparedStatement preparedStatement = null;
+      ResultSet resultSet = null;
+
+      try{
+         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE userId=? AND cardId=? AND CheckIn=? AND CheckOut=?");
+         preparedStatement.setInt(1, userId);
+         preparedStatement.setLong(2, cardId);
+         preparedStatement.setDate(3,checkIn);
+         preparedStatement.setDate(4,checkOut);
+         resultSet = preparedStatement.executeQuery();
+
+         Set<Reservation> reservations = unpackResultSet(resultSet);
+
+         reservation = (Reservation) reservations.toArray()[0];
+      }
+      catch (SQLException e){
+         e.printStackTrace();
+      }
+      finally{
+         try{
+            if(resultSet!=null){
+               resultSet.close();
+            }
+         }
+         catch(SQLException e){
+            e.printStackTrace();
+         }
+         try{
+            if(preparedStatement != null){
+               preparedStatement.close();
+            }
+         }
+         catch(SQLException e){
+            e.printStackTrace();
+         }
+      }
+
+      return reservation;
+
+
+   }
    @Override
    public Boolean update(Reservation obj) {
       try {
