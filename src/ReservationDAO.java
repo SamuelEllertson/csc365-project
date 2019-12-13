@@ -27,24 +27,22 @@ public class ReservationDAO implements Dao<Reservation>{
          preparedStatement.setInt(1, reservationId);
          resultSet = preparedStatement.executeQuery();
 
-         Set<Reservation> reservations = unpackResultSet(resultSet); 
+         Set<Reservation> reservations = unpackResultSet(resultSet);
 
          reservation = (Reservation) reservations.toArray()[0];
-      } 
+      }
       catch (SQLException e){
          e.printStackTrace();
       }
       finally{
-
          try{
             if(resultSet!=null){
                resultSet.close();
             }
-         } 
+         }
          catch(SQLException e){
             e.printStackTrace();
-         }      
-
+         }
          try{
             if(preparedStatement != null){
                preparedStatement.close();
@@ -92,11 +90,39 @@ public class ReservationDAO implements Dao<Reservation>{
 
    @Override
    public Boolean insert(Reservation obj) {
-      return null;
+      PreparedStatement preparedStatement = null;
+
+      boolean success;
+      try {
+         preparedStatement = this.conn.prepareStatement(
+                 "INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(?, ?, ?, ?)"
+         );
+         preparedStatement.setInt(1, obj.userId);
+         preparedStatement.setLong(2,obj.cardId);
+         preparedStatement.setDate(3,obj.checkIn);
+         preparedStatement.setDate(4,obj.checkOut);
+
+         success = preparedStatement.execute();
+      }
+      catch (SQLException e) {
+         e.printStackTrace();
+         success = false;
+      }
+      finally {
+         try {
+            if (preparedStatement != null)
+               preparedStatement.close();
+         }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+      return success;
    }
 
    @Override
    public Boolean update(Reservation obj) {
+      boolean success;
       try {
          PreparedStatement preparedStatement = this.conn.prepareStatement(
             "UPDATE Reservation SET UserId=?, CardId=?, CheckIn=?, CheckOut=? WHERE ReservationId=?"
@@ -106,19 +132,32 @@ public class ReservationDAO implements Dao<Reservation>{
          preparedStatement.setDate(3,obj.checkIn);
          preparedStatement.setDate(4,obj.checkOut);
          preparedStatement.setInt(5,obj.reservationId);
-         
-         preparedStatement.execute();
+
+         success = preparedStatement.execute();
       } 
       catch (SQLException e) {
          e.printStackTrace();
-         return false;
+         success = false;
       }
-      return true;
+      return success;
    }
 
    @Override
    public Boolean delete(Reservation obj) {
-      return null;
+      Boolean success;
+      try {
+         PreparedStatement preparedStatement = this.conn.prepareStatement(
+                 "DELETE FROM Reservation WHERE ReservationId=?"
+         );
+         preparedStatement.setInt(1, obj.userId);
+
+         success = preparedStatement.execute();
+      }
+      catch (SQLException e) {
+         e.printStackTrace();
+         success = false;
+      }
+      return success;
    }
 
    private Set<Reservation> unpackResultSet(ResultSet rs) throws SQLException {
