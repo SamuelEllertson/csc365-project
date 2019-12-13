@@ -25,6 +25,14 @@ public class Reservation{
       this.checkOut = checkOut;
    }
 
+   public void printRes(){
+      System.out.println("Reservation Info:");
+      System.out.println("User Id:" + this.userId);
+      System.out.println("Card Number: " + this.cardId);
+      System.out.println("Check In: "+checkIn.toString());
+      System.out.println("Check Out: "+checkOut.toString());
+   }
+
    @Override
    public String toString(){
       return "reservation(reservationId=" + reservationId + ", userId=" + userId + ", cardId=" + cardId
