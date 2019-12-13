@@ -7,10 +7,6 @@ public class UserView extends View{
        super(controller);
    }
 
-   public void print(String str){
-      System.out.println(str);
-   }
-
    public void PrintMenuItems(){
 
       String[] options = {
@@ -26,19 +22,6 @@ public class UserView extends View{
          print(option);
       }
    }
-
-    /* FOR MANAGER: The system shall provide a user interface for the hotel manager and shall provide
-     * a month-by-month overview of revenue for an entire year. For the purpose of this
-     * assignment, all revenue from the reservation is assigned to the month and year when
-     * the reservation ended. Your system shall display a list of rooms, and, for each room,
-     * 13 columns: 12 columns showing dollar revenue for each month and a 13th column to
-     * display total year revenue for the room. There shall also be a ”totals” row in the
-     * table, which contains column totals. All amounts should be rounded to the nearest
-     * whole dollar.
-     */
-    private void revenueOverview(User.userType type) {
-
-    }
 
     /* ViewRooms 'Find available rooms' option:
      * The system shall allow users to search for availabilities of rooms specifying day

@@ -1,8 +1,11 @@
 import java.util.Set;
 
 public class ReservationsView {
+    // Call DAO's like controller.UserDAO.function()
 
-
+    public UserView(Controller controller) {
+        super(controller);
+    }
 
     /* 1) The system shall allow users to book rooms in a hotel. (Upon reservation,
      * the system shall display the details of the reservation on the screen.)
