@@ -39,11 +39,11 @@ INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Pric
 INSERT INTO Room (RoomId, MaxOccupancy, RoomType, BedType, BedCount, Decor, Price) VALUES (406, 6, 'TWIN', 'QUEEN', 2, 'NAUTICAL', 106);
 
 -- Credit Cards
-/*
+
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(1, 0, 10000);
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(2, 0, 100000);
 INSERT INTO CreditCard(CardId, balance, climit) VALUES(3, 0, 1500);
-*/
+
 -- Reservations
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(2, 1, '2019-11-22', '2019-11-24');
 INSERT INTO Reservation(UserId, CardId, CheckIn, CheckOut) VALUES(3, 2, '2019-11-29', '2019-12-01');
