@@ -8,10 +8,6 @@ public class UserView extends View{
        super(controller);
    }
 
-   public void print(String str){
-      System.out.println(str);
-   }
-
    public void PrintMenuItems(){
 
       String[] options = {

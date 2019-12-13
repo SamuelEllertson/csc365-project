@@ -10,6 +10,10 @@ public abstract class View {
         this.input = new Scanner(System.in);
     }
 
+    public void print(String str){
+        System.out.println(str);
+    }
+
     abstract public void  PrintMenuItems();
 
     abstract public void doUILoop(User user);
