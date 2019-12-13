@@ -106,14 +106,45 @@ public class ReservationsView {
         System.out.println("Successfully updated number of occupants to " + roomRes.occupants + "\n");
     }
 
-    private void replaceRoom(RoomsReserved roomRes) {
-        /* Display available rooms
-        Rooms available:
-        Select RoomId:
-        No rooms available:
-        Select another room (back to Enter RoomId)
-        Cancel Edit */
-        // !!
+    private void replaceRoom(Reservation res, RoomsReserved roomRes) {
+        boolean correctInput;
+        int roomNum = 0;
+        Set<Room> availableRooms = controller.roomDAO.getAvailableRoomsOnDateRange(res.checkIn, res.checkOut, roomRes.occupants);
+        System.out.println("Available Rooms for replacement:");
+        if (availableRooms.size() == 0) {
+            System.out.println("No other available rooms in date range " + res.checkIn + " to " + res.checkOut);
+            return;
+        }
+        int num = 1;
+        Object[] rooms = availableRooms.toArray();
+        // Display available rooms
+        for (Object r:rooms) {
+            System.out.println(num + ") " + ((Room)r).toString());
+            num++;
+        }
+        System.out.print("Select room to replace with: ");
+        do {
+            try {
+                correctInput = true;
+                roomNum = Integer.parseInt(input.nextLine());
+                if (roomNum <= 0 || roomNum > rooms.length) {
+                    throw new NumberFormatException();
+                }
+            }catch (NumberFormatException e) {
+                System.out.print("Invalid input: Enter room number between 1 and " + rooms.length + ": ");
+                correctInput = false;
+            }
+        }while(!correctInput);
+        Room r = (Room)rooms[roomNum - 1];
+
+        RoomsReserved rrCpy = new RoomsReserved(roomRes.reservationId, r.roomId, roomRes.occupants);
+        if (!controller.roomsReservedDAO.update(rrCpy)) {
+            System.out.println("FAILED: Could not change room");
+            return;
+        }
+        roomRes = rrCpy;
+        System.out.println("Successfully changed reserved room to " + roomRes.roomId + "\n");
+
     }
 
     private void editRoom(Reservation res, Object[] roomsRes) {
@@ -143,7 +174,7 @@ public class ReservationsView {
             correctInput = true;
             switch(in) {
                 case("1"): editNumOccupants(roomRes); break;
-                case("2"): replaceRoom(roomRes); break;
+                case("2"): replaceRoom(res, roomRes); break;
                 case("3"): System.out.println(""); return;
                 default:
                     System.out.print("Invalid input: Enter number between 1 and 3: ");
