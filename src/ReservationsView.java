@@ -3,9 +3,9 @@ import java.util.Set;
 public class ReservationsView {
     // Call DAO's like controller.UserDAO.function()
 
-    public UserView(Controller controller) {
-        super(controller);
-    }
+//    public UserView(Controller controller) {
+//        super(controller);
+//    }
 
     /* 1) The system shall allow users to book rooms in a hotel. (Upon reservation,
      * the system shall display the details of the reservation on the screen.)
@@ -28,12 +28,12 @@ public class ReservationsView {
     /* 8) The system shall display the list of reservations made by a user, including active
      * and past reservations.
      */
-    private void displayUserReserv(int userId) {
-        Set<Reservation> reservations = controller.reservationDAO.getByUserId(userId);
-        for (Reservation res: reservations) {
-            System.out.println(res.toString());
-        }
-    }
+//    private void displayUserReserv(int userId) {
+//        Set<Reservation> reservations = controller.reservationDAO.getByUserId(userId);
+//        for (Reservation res: reservations) {
+//            System.out.println(res.toString());
+//        }
+//    }
     /*For viewing, editing, and canceling reservations (2-4)*/
 }
 
