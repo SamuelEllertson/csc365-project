@@ -39,6 +39,16 @@ public class Room{
       this.price = price;
    }
 
+   public void printRoomInfo(){
+      System.out.println("Max Occupancy: "+ maxOccupancy);
+      System.out.println("Room Type: "+ roomType.name());
+      System.out.println("Bed Type: "+ bedType.name());
+      System.out.println("Bed Count: "+bedCount);
+      System.out.println("Decor: " + decor.name());
+      System.out.println("Price: "+price);
+   }
+
+
    @Override
    public String toString() {
     return "Room(roomId=" + roomId + ", maxOccupancy=" + maxOccupancy + ", roomType=" + roomType.name()

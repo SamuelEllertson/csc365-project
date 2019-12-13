@@ -1,6 +1,7 @@
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
+import java.util.Scanner;
+
 import java.sql.Date;
 
 public class BookView {
@@ -90,7 +91,7 @@ public class BookView {
                 correctInput = true;
                 System.out.print("Enter the number of occupants for this room: ");
                 numOccupants = Integer.parseInt(scanner.nextLine());
-                if(numOccupants<0){
+                if(numOccupants<1){
                     throw new NumberFormatException();
                 }
 
@@ -152,12 +153,6 @@ public class BookView {
     }
 
     public void getType(){
-
-        /* Select room type:
-        1) SINGLE
-        2) DOUBLE
-        3) TWIN
-        4) ANY*/
 
         boolean validInput;
 
@@ -275,7 +270,7 @@ public class BookView {
                             throw new NumberFormatException();
                         }
                         else{
-                            bType = enumVal[i-1].name();
+                            decor = enumVal[i-1].name();
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Not a valid option");
@@ -294,6 +289,70 @@ public class BookView {
     }
 
     public void dispAvail(){
+
+        Set<Room> availableRooms = controller.roomDAO.getAvailableRooms(res.checkIn,
+                res.checkOut, numOccupants, minPrice,maxPrice,rType, bType,decor);
+
+
+        if(availableRooms.isEmpty()){
+
+            System.out.println("No Rooms Found");
+            System.out.println("1) Find Another Room");
+            System.out.println("2) Cancel Reservation (Will lose everything reserved)");
+            if(totalRooms>=1){
+                System.out.println("3) Reserve as is");
+            }
+            String option = scanner.nextLine();
+            if(option.equals("1")){
+
+            }
+            else if(option.equals("2")){
+
+            }
+            else if(option.equals("3")&& totalRooms==0){
+
+            }
+
+        }
+        else {
+            boolean correctInput;
+            do{
+                try {
+                    correctInput = true;
+                    Object roomsArr[] = availableRooms.toArray();
+                    int i = 0;
+                    System.out.println("Select a Room");
+                    for (Object room : roomsArr) {
+                        i++;
+                        System.out.println(i + ")");
+                        ((Room) room).printRoomInfo();
+                    }
+                    int option = Integer.parseInt(scanner.nextLine());
+
+                    if (option < 0 || option > i) {
+                        throw new NumberFormatException();
+                    }
+                    else if(rooms.contains((Room)roomsArr[i-1])){
+
+
+                    }
+                    else {
+                        totalCost += ((Room)roomsArr[i-1]).price;
+                        totalOccupants += numOccupants;
+                        totalRooms++;
+                        rooms.add((Room)roomsArr[i-1]);
+                    }
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Not a valid option");
+                    correctInput = false;
+                }
+        } while (!correctInput);
+
+        }
+
+
+
         /*    Display availability
     No rooms available:
     Find another room
