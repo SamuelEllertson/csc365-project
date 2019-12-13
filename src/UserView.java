@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class UserView extends View{
-   // Call DAO's like controller.UserDAO.function()
 
    public UserView(Controller controller) {
        super(controller);
