@@ -39,6 +39,16 @@ public class Room{
       this.price = price;
    }
 
+   public void printRoomInfo(){
+      System.out.println("Max Occupancy: "+ maxOccupancy);
+      System.out.println("Room Type: "+ roomType.name());
+      System.out.println("Bed Type: "+ bedType.name());
+      System.out.println("Bed Count: "+bedCount);
+      System.out.println("Decor: " + decor.name());
+      System.out.println("Price: "+price);
+   }
+
+
    @Override
    public String toString() {
     return "Room(roomId=" + roomId + ", maxOccupancy=" + maxOccupancy + ", roomType=" + roomType.name()
@@ -46,4 +56,27 @@ public class Room{
       + ", price=" + price + ')';
   }
 
+   @Override
+   public boolean equals(Object o) {
+      boolean equal = true;
+      if(o == null)
+         equal = false;
+      else if (o.getClass() != this.getClass())
+         equal = false;
+      else if(this.bedCount != ((Room) o).bedCount)
+         equal = false;
+      else if(this.maxOccupancy != ((Room) o).maxOccupancy)
+         equal = false;
+      else if(this.price != ((Room) o).price)
+         equal = false;
+      else if(this.roomId != ((Room) o).roomId)
+         equal = false;
+      else if(this.bedType != ((Room) o).bedType)
+         equal = false;
+      else if(this.decor != ((Room) o).decor)
+         equal = false;
+      else if(this.roomType != ((Room) o).roomType)
+         equal = false;
+      return equal;
+   }
 }

@@ -1,4 +1,8 @@
-
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.sql.Date;
 public class Controller{
 
     public ConnectionFactory connectionFactory;
@@ -19,6 +23,10 @@ public class Controller{
         this.creditCardDAO = new CreditCardDAO(cf.getConnection(), this);
         this.reservationDAO = new ReservationDAO(cf.getConnection(), this);
         this.roomsReservedDAO = new RoomsReservedDAO(cf.getConnection(), this);
+    }
+
+    public boolean addReservations(Reservation res, Set<Room> rooms ){
+        return false;
     }
 
     //implements issue #5
@@ -70,4 +78,19 @@ public class Controller{
     }
 
 
+
+
 }
+
+/*      while(rs.next()) {
+         Room room = new Room(
+         rs.getInt("RoomId"),
+         rs.getInt("MaxOccupancy"),
+         rs.getString("RoomType"),
+         rs.getString("BedType"),
+         rs.getInt("BedCount"),
+         rs.getString("Decor"),
+         rs.getFloat("Price"));
+         rooms.add(room);
+      }
+      return rooms;*/
