@@ -10,17 +10,6 @@ public abstract class View {
         this.input = new Scanner(System.in);
     }
 
-    public User login(){
-        System.out.print("Username: ");
-        String username = input.nextLine().trim();
-
-        System.out.print("Password: ");
-        String password = input.nextLine().trim();
-
-        User user = controller.userDAO.getByUserNameAndPassword(username, password);
-        return user;
-    }
-
     abstract public void  PrintMenuItems();
 
     abstract public void doUILoop(User user);
