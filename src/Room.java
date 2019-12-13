@@ -22,6 +22,13 @@ public class Room{
    public decorEnum decor;//enum
    public float price;
 
+   public Room(){
+      this.roomId = 0;
+      this.maxOccupancy = 0;
+      this.bedCount = 0;
+      this.price = 0;
+   }
+
    public Room(int roomId, int maxOccupancy, String roomType, String bedType, int bedCount, String decor, float price){
       this.roomId = roomId;
       this.maxOccupancy = maxOccupancy;

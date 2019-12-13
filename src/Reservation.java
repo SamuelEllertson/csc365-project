@@ -9,6 +9,14 @@ public class Reservation{
    public Date checkIn;
    public Date checkOut;
 
+   public Reservation(){
+      this.reservationId = 0;
+      this.userId = 0;
+      this.cardId = 0;
+      this.checkIn = null;
+      this.checkOut = null;
+   }
+
    public Reservation(int reservationId, int userId, long cardId, Date checkIn, Date checkOut){
       this.reservationId = reservationId;
       this.userId = userId;
