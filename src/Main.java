@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.Properties;
+import java.util.Scanner;
 
 public class Main{
 
@@ -36,8 +37,20 @@ public class Main{
 
         //create our view and begin the UI loop
         Controller controller = new Controller(connectionFactory);
-        View view = new View(controller);
-        controller.view = view;
+        ViewFactory viewFactory = new ViewFactory(controller);
+        User user = null;
+        boolean loggedIn = false;
+        while(!loggedIn) {
+            user = login(controller);
+            if(user != null)
+                loggedIn = true;
+            else{
+                System.out.println("Incorrect Username or password");
+            }
+        }
+
+        View view = viewFactory.getView(user.type);
+//        controller.view = view;
 
         
         //Testing stuff
@@ -48,8 +61,22 @@ public class Main{
         //System.out.println(controller.creditCardDAO.insert(cc));
 
         //System.out.println(controller.userDAO.getAll());
-        System.out.println(controller.creditCardDAO.getAll());
-        
-        view.doUILoop();
+//        System.out.println(controller.creditCardDAO.getAll());
+
+        System.out.println(user.type.toString());
+        view.doUILoop(user);
+    }
+
+    public static User login(Controller controller){
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Username: ");
+        String username = input.nextLine().trim();
+
+        System.out.print("Password: ");
+        String password = input.nextLine().trim();
+
+        User user = controller.userDAO.getByUserNameAndPassword(username, password);
+        return user;
     }
 }

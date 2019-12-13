@@ -23,6 +23,7 @@ local.properties
 ### Intellij ###
 .idea
 *.iml
+out/
 
 # External tool builders
 .externalToolBuilders/

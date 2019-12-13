@@ -58,6 +58,52 @@ public class UserDAO implements Dao<User>{
     return user;
    }
 
+   public User getByUserNameAndPassword(String userName, String password){
+       User user = null;
+       PreparedStatement preparedStatement = null;
+       ResultSet resultSet = null;
+
+       try{
+           preparedStatement = this.conn.prepareStatement("SELECT * FROM User WHERE username=? AND password=?");
+           preparedStatement.setString(1, userName);
+           preparedStatement.setString(2, password);
+           resultSet = preparedStatement.executeQuery();
+
+           Set<User> users = unpackResultSet(resultSet);
+
+           Object[] userArr = users.toArray();
+           if(userArr.length != 0)
+               user = (User) userArr[0];
+
+           return user;
+       }
+       catch (SQLException e){
+           e.printStackTrace();
+       }
+       finally{
+
+           try{
+               if(resultSet!=null){
+                   resultSet.close();
+               }
+           }
+           catch(SQLException e){
+               e.printStackTrace();
+           }
+
+           try{
+               if(preparedStatement != null){
+                   preparedStatement.close();
+               }
+           }
+           catch(SQLException e){
+               e.printStackTrace();
+           }
+       }
+
+       return user;
+   }
+
    @Override
    public Set<User> getAll() {
       Set<User> users = null;

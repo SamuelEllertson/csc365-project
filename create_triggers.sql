@@ -1,0 +1,4 @@
+/*
+check if they can pay
+check if rooms are available 
+*/

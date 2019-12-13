@@ -2,7 +2,6 @@
 public class Controller{
 
     public ConnectionFactory connectionFactory;
-    public View view;
 
     //TODO: Uncomment when the DAOS are implemented
     

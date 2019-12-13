@@ -56,6 +56,38 @@ public class ReservationDAO implements Dao<Reservation>{
       return reservation;
    }
 
+   public Set<Reservation> getByUserId(int userId){
+      Set<Reservation> reservations = null;
+      PreparedStatement preparedStatement = null;
+      ResultSet resultSet = null;
+      try {
+         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE UserId=?");
+         preparedStatement.setInt(1, userId);
+         resultSet = preparedStatement.executeQuery();
+         reservations = unpackResultSet(resultSet);
+      }
+      catch (SQLException e) {
+         e.printStackTrace();
+      }
+      finally {
+         try {
+            if (resultSet != null)
+               resultSet.close();
+         }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+         try {
+            if (preparedStatement != null)
+               preparedStatement.close();
+         }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+      return reservations;
+   }
+
    @Override
    public Set<Reservation> getAll() {
       Set<Reservation> reservations = null;
