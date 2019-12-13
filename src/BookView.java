@@ -1,13 +1,13 @@
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Scanner;
-
+import java.util.HashMap;
 import java.sql.Date;
 
 public class BookView {
 
     private Reservation res = new Reservation();
-    private Set<Room> rooms = new HashSet<Room>();
+    private HashMap<Room,Integer> rooms = new HashMap<Room,Integer>();
 
     private int totalRooms = 0;
     private int totalOccupants = 0;
@@ -177,7 +177,7 @@ public class BookView {
                         }
                         int option = Integer.parseInt(scanner.nextLine());
 
-                        if (option < 0 || option > i) {
+                        if (option < 1 || option > i) {
                             throw new NumberFormatException();
                         }
                         else{
@@ -223,7 +223,7 @@ public class BookView {
                         }
                         int option = Integer.parseInt(scanner.nextLine());
 
-                        if (option < 0 || option > i) {
+                        if (option < 1 || option > i) {
                             throw new NumberFormatException();
                         }
                         else{
@@ -268,7 +268,7 @@ public class BookView {
                         }
                         int option = Integer.parseInt(scanner.nextLine());
 
-                        if (option < 0 || option > i) {
+                        if (option < 1 || option > i) {
                             throw new NumberFormatException();
                         }
                         else{
@@ -313,15 +313,15 @@ public class BookView {
                     }
                     int option = Integer.parseInt(scanner.nextLine());
 
-                    if (option < 0 || option > i) {
+                    if (option < 1 || option > i) {
                         throw new NumberFormatException();
-                    } else if (rooms.contains((Room) roomsArr[i - 1])) {
+                    } else if (rooms.containsKey((Room) roomsArr[i - 1])) {
                         throw new IllegalStateException();
                     } else {
                         totalCost += ((Room) roomsArr[i - 1]).price;
                         totalOccupants += numOccupants;
                         totalRooms++;
-                        rooms.add((Room) roomsArr[i - 1]);
+                        rooms.put((Room) roomsArr[i - 1],numOccupants);
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Not a valid option");
@@ -356,7 +356,7 @@ public class BookView {
                         thisCheck = true;
                         System.out.print("Enter Card Number: ");
                         res.cardId = Long.parseLong(scanner.nextLine());
-                        controller.addReservations(res,rooms);
+                        controller.addReservations(res,rooms,totalCost);
 
 
                     } catch (NumberFormatException e) {

@@ -14,9 +14,14 @@ public class CreditCardDAO implements Dao<CreditCard>{
       this.conn = conn;
       this.controller = controller;
    }
-   
+
    @Override
-   public CreditCard getById(int cardId){
+   public CreditCard getById(int id) {
+      return null;
+   }
+
+
+   public CreditCard getByCardId(long cardId){
 
       CreditCard credCard = null;
       PreparedStatement preparedStatement = null;
@@ -24,7 +29,7 @@ public class CreditCardDAO implements Dao<CreditCard>{
 
       try{
          preparedStatement = this.conn.prepareStatement("SELECT * FROM CreditCard WHERE CardId=?");
-         preparedStatement.setInt(1, cardId);
+         preparedStatement.setLong(1, cardId);
          resultSet = preparedStatement.executeQuery();
 
          Set<CreditCard> credCards = unpackResultSet(resultSet); 
