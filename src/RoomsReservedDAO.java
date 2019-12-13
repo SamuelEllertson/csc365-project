@@ -94,10 +94,10 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
         return monthlyRevenue;
     }
 
-    public Map<String, Map<String, Integer>> getRoomsMonthlyRevenue(){
+    public Map<String, Map<String, Float>> getRoomsMonthlyRevenue(){
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        Map<String, Map<String, Integer>> roomMonthlyRevenue = new LinkedHashMap<>();
+        Map<String, Map<String, Float>> roomMonthlyRevenue = new LinkedHashMap<>();
         try {
 
             preparedStatement = this.conn.prepareStatement(
@@ -106,7 +106,7 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Integer roomId = resultSet.getInt("RoomId");
-                Map<String, Integer> monthly = getMonthlyMap();
+                Map<String, Float> monthly = getMonthlyMap();
                 roomMonthlyRevenue.put(roomId.toString(), monthly);
             }
             resultSet.close();
@@ -127,9 +127,10 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Integer roomId = resultSet.getInt("RoomId");
-                Map<String, Integer> monthly = roomMonthlyRevenue.get(roomId.toString());
+                Map<String, Float> monthly = roomMonthlyRevenue.get(roomId.toString());
                 String month = resultSet.getString("month");
-                int revenue = resultSet.getInt("revenue");
+                float revenue = resultSet.getFloat("revenue");
+                revenue =  ((float)Math.round(100*revenue))/100;
                 monthly.replace(month, revenue);
             }
         }
@@ -157,27 +158,27 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
         return roomMonthlyRevenue;
     }
 
-    private Map<String, Integer> getMonthlyMap(){
-        Map<String, Integer> monthly = new LinkedHashMap<>();
-        monthly.put("January", 0);
-        monthly.put("February", 0);
-        monthly.put("March", 0);
-        monthly.put("April", 0);
-        monthly.put("May", 0);
-        monthly.put("June", 0);
-        monthly.put("July", 0);
-        monthly.put("August", 0);
-        monthly.put("September", 0);
-        monthly.put("October", 0);
-        monthly.put("November", 0);
-        monthly.put("December", 0);
+    private Map<String, Float> getMonthlyMap(){
+        Map<String, Float> monthly = new LinkedHashMap<>();
+        monthly.put("January", (float) 0);
+        monthly.put("February", (float) 0);
+        monthly.put("March", (float) 0);
+        monthly.put("April", (float) 0);
+        monthly.put("May", (float) 0);
+        monthly.put("June", (float) 0);
+        monthly.put("July", (float) 0);
+        monthly.put("August", (float) 0);
+        monthly.put("September", (float) 0);
+        monthly.put("October", (float) 0);
+        monthly.put("November", (float) 0);
+        monthly.put("December", (float) 0);
         return monthly;
     }
 
-    private void addTotalColumn(Map<String, Map<String, Integer>> roomMonthlyRevenue){
+    private void addTotalColumn(Map<String, Map<String, Float>> roomMonthlyRevenue){
         for(String roomId: roomMonthlyRevenue.keySet()){
-            Map<String, Integer> monthly = roomMonthlyRevenue.get(roomId);
-            int total = 0;
+            Map<String, Float> monthly = roomMonthlyRevenue.get(roomId);
+            float total = 0;
             for(String month: monthly.keySet()){
                 total += monthly.get(month);
             }
@@ -185,14 +186,14 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
         }
     }
 
-    private void addTotalRow(Map<String, Map<String, Integer>> roomMonthlyRevenue){
-        Map<String, Integer> monthly = getMonthlyMap();
-        monthly.put("total", 0);
+    private void addTotalRow(Map<String, Map<String, Float>> roomMonthlyRevenue){
+        Map<String, Float> monthly = getMonthlyMap();
+        monthly.put("total", (float) 0);
         for(String roomId: roomMonthlyRevenue.keySet()){
-            Map<String, Integer> roomMonth = roomMonthlyRevenue.get(roomId);
+            Map<String, Float> roomMonth = roomMonthlyRevenue.get(roomId);
             for(String month: roomMonth.keySet()){
-                int current = monthly.get(month);
-                int total = current + roomMonth.get(month);
+                float current = monthly.get(month);
+                float total = current + roomMonth.get(month);
                 monthly.replace(month, total);
             }
         }
