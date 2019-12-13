@@ -48,15 +48,15 @@ public class UserView extends View{
       
         while(true){
         PrintMenuItems();
-        int in = input.nextInt();
+        String in = input.nextLine();
 
         switch(in) {
-            case(1): /* Book Reservation */ break;
-            case(2): /* View Reservation */ break;
-            case(3): /* Edit Reservation */ break;
-            case(4): /* Cancel Reservation */ break;
-            case(5): /* View Rooms */ break;
-            case(6): /* Logout */
+            case("1"): /* Book Reservation */ break;
+            case("2"): /* View Reservation */ break;
+            case("3"): /* Edit Reservation */ break;
+            case("4"): /* Cancel Reservation */ break;
+            case("5"): /* View Rooms */ break;
+            case("6"): /* Logout */
                 input.close();
                 System.exit(0);
                 break;
