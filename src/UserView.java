@@ -59,12 +59,12 @@ public class UserView extends View{
             case("2"): reservationsView.viewReservations(user.userId); break;
             case("3"): reservationsView.editReservation(user.userId); break;
             case("4"): reservationsView.cancelReservation(user.userId); break;
-            case("5"): /* View Rooms */ break;
+            case("5"): bookView.showRoomsView(user.userId);break;
             case("6"): /* Logout */
                 input.close();
                 System.exit(0);
                 break;
-            default: print("Invalid input: Must be integer between 1 and 9");
+            default: print("Invalid input: Must be integer between 1 and 6");
          }
       }
    }

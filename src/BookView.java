@@ -40,6 +40,104 @@ public class BookView {
     }
 
 
+    public void showRoomsView(int userId){
+
+        res.userId = userId;
+        boolean validInput;
+        String option;
+        do {
+
+            validInput=true;
+            System.out.println("Select an Option (Number):");
+            System.out.println("1) Display All Rooms");
+            System.out.println("2) Advanced Search");
+
+            option = scanner.nextLine();
+
+            if(option.equals("1")){
+                Set<Room> rooms = controller.roomDAO.getAll();
+                Object arr[] = rooms.toArray();
+                int i = 1;
+                for(Object a: arr){
+                    System.out.println(i+") ");
+                    ((Room)a).printRoomInfo();
+                    i++;
+                }
+            }
+            else if(option.equals("2")){
+                queryLoop();
+            }
+            else{
+                System.out.println("Invalid Input");
+                validInput = false;
+            }
+
+
+
+        }while(!validInput);
+
+    }
+
+    public void queryLoop(){
+        boolean searchAgain =true;
+        while(searchAgain) {
+            getQueryDay();
+            getQueryOcc();
+            getOccupants();
+            getPriceRange();
+            getType();
+            getBedType();
+            getDecor();
+            searchAgain = dispAvail2();
+        }
+
+    }
+
+    public void getQueryDay(){
+
+        boolean validInput;
+
+        do {
+            validInput =true;
+            System.out.println("Do you have a date range in mind? (Y/N)");
+            String option = scanner.nextLine();
+            if(option.equals("Y")){
+                getResDay();
+            }
+            else if(option.equals("N")){
+                return;
+            }
+            else{
+                validInput =false;
+                System.out.println("Invalid Input");
+            }
+        }while(!validInput);
+
+    }
+    public void getQueryOcc(){
+
+        boolean validInput;
+
+        do {
+            validInput =true;
+            System.out.println("Do you have a number of occupants in mind? (Y/N)");
+            String option = scanner.nextLine();
+            if(option.equals("Y")){
+                getOccupants();
+            }
+            else if(option.equals("N")){
+                return;
+            }
+            else{
+                validInput =false;
+                System.out.println("Invalid Input");
+            }
+
+
+        }while(!validInput);
+
+    }
+
     public void getResDay(){
 
         boolean correctInput = true;
@@ -332,6 +430,49 @@ public class BookView {
                 }
             } while (!correctInput);
         }
+    }
+
+    public boolean dispAvail2() {
+
+        Set<Room> availableRooms = controller.roomDAO.getAvailableRooms(res.checkIn,
+                res.checkOut, numOccupants, minPrice, maxPrice, rType, bType, decor);
+
+
+        if (availableRooms.isEmpty()) {
+            System.out.println("No Rooms Found");
+        }
+        else{
+            Object roomsArr[] = availableRooms.toArray();
+            int i = 0;
+
+            for (Object room : roomsArr) {
+                i++;
+                System.out.println(i + ")");
+                ((Room) room).printRoomInfo();
+            }
+        }
+        boolean correctInput;
+        do {
+            correctInput = true;
+            try {
+                System.out.println("1) Search Again");
+                System.out.println("2) Go Back");
+                int option = Integer.parseInt(scanner.nextLine());
+                if(option==1){
+                    return true;
+                }
+                else if(option==2){
+                    return false;
+                }
+                else{
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Not a valid option");
+                correctInput = false;
+             }
+         } while (!correctInput);
+        return false;
     }
 
     public boolean endOfLoop(){
