@@ -62,7 +62,7 @@ public class ReservationDAO implements Dao<Reservation>{
       PreparedStatement preparedStatement = null;
       ResultSet resultSet = null;
       try {
-         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE UserId=?");
+         preparedStatement = this.conn.prepareStatement("SELECT * FROM Reservation WHERE UserId=? ORDER BY CheckIn, CheckOut");
          preparedStatement.setInt(1, userId);
          resultSet = preparedStatement.executeQuery();
          reservations = unpackResultSet(resultSet);

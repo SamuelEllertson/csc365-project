@@ -278,6 +278,7 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
             preparedStatement.setInt(1,obj.reservationId);
             preparedStatement.setInt(2,obj.roomId);
             // preparedStatement.setInt(3,obj.occupants);
+            preparedStatement.execute();
         }
         catch (SQLException e){
             e.printStackTrace();
