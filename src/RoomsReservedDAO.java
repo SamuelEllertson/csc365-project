@@ -2,8 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class RoomsReservedDAO implements Dao<RoomsReserved>{
 
@@ -48,6 +47,52 @@ public class RoomsReservedDAO implements Dao<RoomsReserved>{
         return res;
     }
 
+    public Map<String, Integer> getMonthlyRevenue(){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Map<String, Integer> monthlyRevenue = new HashMap<>();
+        try {
+
+            preparedStatement = this.conn.prepareStatement(
+                    "SELECT MONTHNAME(CONCAT('2011-', month, '-01')) AS month, revenue FROM(\n" +
+                            "    SELECT\n" +
+                            "        DATE_FORMAT(re.CheckOut, \"%m\") AS month,\n" +
+                            "        SUM(DATEDIFF(re.CheckOut, re.CheckIn)*ro.Price) AS revenue\n" +
+                            "    FROM Reservation re\n" +
+                            "    JOIN RoomsReserved rr ON re.ReservationId = rr.ReservationId\n" +
+                            "    JOIN Room ro ON rr.RoomId = ro.RoomId\n" +
+                            "    GROUP BY month\n" +
+                            "    ORDER BY month\n" +
+                            ") AS M"
+            );
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String month = resultSet.getString("month");
+                int revenue = resultSet.getInt("revenue");
+                monthlyRevenue.put(month, revenue);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return monthlyRevenue;
+    }
 
     public Set<RoomsReserved> getByRoomId(int roomId){
         Set<RoomsReserved> res = null;
