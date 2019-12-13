@@ -154,24 +154,23 @@ public class ReservationDAO implements Dao<Reservation>{
 
    @Override
    public Boolean update(Reservation obj) {
-      boolean success;
       try {
          PreparedStatement preparedStatement = this.conn.prepareStatement(
             "UPDATE Reservation SET UserId=?, CardId=?, CheckIn=?, CheckOut=? WHERE ReservationId=?"
          );
          preparedStatement.setInt(1, obj.userId);
          preparedStatement.setLong(2,obj.cardId);
-         preparedStatement.setDate(3,obj.checkIn);
+         preparedStatement.setDate(3, obj.checkIn);
          preparedStatement.setDate(4,obj.checkOut);
          preparedStatement.setInt(5,obj.reservationId);
 
-         success = preparedStatement.execute();
+         preparedStatement.execute();
       } 
       catch (SQLException e) {
          e.printStackTrace();
-         success = false;
+         return false;
       }
-      return success;
+      return true;
    }
 
    @Override
