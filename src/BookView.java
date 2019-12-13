@@ -497,7 +497,15 @@ public class BookView {
                         System.out.print("Enter Card Number: ");
                         res.cardId = Long.parseLong(scanner.nextLine());
                         controller.addReservations(res,rooms,totalCost);
-
+                        res.printRes();
+                        System.out.println("Rooms for this Reservations:");
+                        int i = 0;
+                        Object roomsArr[] = rooms.keySet().toArray();
+                        for (Object room : roomsArr) {
+                            i++;
+                            System.out.println(i + ")");
+                            ((Room) room).printRoomInfo();
+                        }
 
                     } catch (NumberFormatException e) {
                         System.out.println("Not a valid card number");
