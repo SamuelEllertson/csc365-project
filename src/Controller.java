@@ -25,6 +25,10 @@ public class Controller{
         this.roomsReservedDAO = new RoomsReservedDAO(cf.getConnection(), this);
     }
 
+    public boolean addReservations(Reservation res, Set<Room> rooms ){
+        return false;
+    }
+
     //implements issue #5
     //returns true on success, false on failure
     public boolean CreateReservation(){

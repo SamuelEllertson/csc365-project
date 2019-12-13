@@ -74,13 +74,15 @@ public class BookView {
 
 
     public void getRoom(){
-        while(true) {
+        boolean exitCode = false;
+        while(!exitCode) {
             getOccupants();
             getPriceRange();
             getType();
             getBedType();
             getDecor();
             dispAvail();
+            exitCode = endOfLoop();
         }//if pay exit to menu even if fail, if cancel exit to menu, if exit
     }
     public void getOccupants(){
@@ -288,40 +290,22 @@ public class BookView {
         }while(!validInput);
     }
 
-    public void dispAvail(){
+    public void dispAvail() {
 
         Set<Room> availableRooms = controller.roomDAO.getAvailableRooms(res.checkIn,
-                res.checkOut, numOccupants, minPrice,maxPrice,rType, bType,decor);
+                res.checkOut, numOccupants, minPrice, maxPrice, rType, bType, decor);
 
 
-        if(availableRooms.isEmpty()){
-
+        if (availableRooms.isEmpty()) {
             System.out.println("No Rooms Found");
-            System.out.println("1) Find Another Room");
-            System.out.println("2) Cancel Reservation (Will lose everything reserved)");
-            if(totalRooms>=1){
-                System.out.println("3) Reserve as is");
-            }
-            String option = scanner.nextLine();
-            if(option.equals("1")){
-
-            }
-            else if(option.equals("2")){
-
-            }
-            else if(option.equals("3")&& totalRooms==0){
-
-            }
-
-        }
-        else {
+        } else {
             boolean correctInput;
-            do{
+            do {
                 try {
                     correctInput = true;
                     Object roomsArr[] = availableRooms.toArray();
                     int i = 0;
-                    System.out.println("Select a Room");
+                    System.out.println("Select a Room: ");
                     for (Object room : roomsArr) {
                         i++;
                         System.out.println(i + ")");
@@ -331,48 +315,64 @@ public class BookView {
 
                     if (option < 0 || option > i) {
                         throw new NumberFormatException();
-                    }
-                    else if(rooms.contains((Room)roomsArr[i-1])){
-
-
-                    }
-                    else {
-                        totalCost += ((Room)roomsArr[i-1]).price;
+                    } else if (rooms.contains((Room) roomsArr[i - 1])) {
+                        throw new IllegalStateException();
+                    } else {
+                        totalCost += ((Room) roomsArr[i - 1]).price;
                         totalOccupants += numOccupants;
                         totalRooms++;
-                        rooms.add((Room)roomsArr[i-1]);
+                        rooms.add((Room) roomsArr[i - 1]);
                     }
-                }
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.out.println("Not a valid option");
                     correctInput = false;
+                } catch (IllegalStateException e) {
+                    System.out.println("Room Already Selected, Pick Another");
+                    correctInput = false;
                 }
-        } while (!correctInput);
-
+            } while (!correctInput);
         }
-
-
-
-        /*    Display availability
-    No rooms available:
-    Find another room
-    Cancel
-
-    Rooms available: List Rooms
-    Select Room
-    Cancel
-*/
     }
 
-    public void payOrSelect(){
-        /*transaction or other option
-        Display # of Rooms, total # occupants, total price, Room Info (for each)
-        Pay (-> Transaction)
-        Select another room (back to List Rooms)
-        Cancel
-        */
-    }
+    public boolean endOfLoop(){
+        boolean correctInput;
+        do {
+            correctInput = true;
+            System.out.println("Current Options: ");
+            System.out.println("1) Find Another Room");
+            System.out.println("2) Cancel Reservation (Will lose everything reserved)");
+            if (totalRooms > 0) {
+                System.out.println("3) Reserve as is");
+            }
+            String option = scanner.nextLine();
+            if (option.equals("1")) {
+                return false;
+            } else if (option.equals("2")) {
+                return true;
+            } else if (option.equals("3") && totalRooms > 0) {
+                boolean thisCheck;
+                do {
+                    try {
+                        thisCheck = true;
+                        System.out.print("Enter Card Number: ");
+                        res.cardId = Long.parseLong(scanner.nextLine());
+                        controller.addReservations(res,rooms);
 
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid card number");
+                        thisCheck = false;
+                    }
+                }while(!thisCheck);
+                //payment transaction
+                return true;
+
+            } else {
+                correctInput = false;
+            }
+        } while (!correctInput);
+        return true;
+    }
 
 
 }
