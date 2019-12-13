@@ -64,6 +64,7 @@ public class Main{
 //        System.out.println(controller.creditCardDAO.getAll());
 
         System.out.println(user.type.toString());
+        System.out.println("");
         view.doUILoop(user);
     }
 
