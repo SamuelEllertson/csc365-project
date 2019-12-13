@@ -278,7 +278,7 @@ public class BookView {
                             throw new NumberFormatException();
                         }
                         else{
-                            rType = enumVal[i-1].name();
+                            rType = enumVal[option-1].name();
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Not a valid option");
@@ -324,7 +324,7 @@ public class BookView {
                             throw new NumberFormatException();
                         }
                         else{
-                            bType = enumVal[i-1].name();
+                            bType = enumVal[option-1].name();
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Not a valid option");
@@ -369,7 +369,7 @@ public class BookView {
                             throw new NumberFormatException();
                         }
                         else{
-                            decor = enumVal[i-1].name();
+                            decor = enumVal[option-1].name();
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Not a valid option");
