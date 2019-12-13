@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.sql.Date;
@@ -245,8 +246,8 @@ public class ReservationDAO implements Dao<Reservation>{
          rs.getInt("ReservationId"),
          rs.getInt("UserId"),
          rs.getLong("CardId"),
-         rs.getDate("CheckIn"),
-         rs.getDate("CheckOut"));
+         rs.getDate("CheckIn", Calendar.getInstance()),
+         rs.getDate("CheckOut", Calendar.getInstance()));
          reservations.add(reservation);
       }
       return reservations;
