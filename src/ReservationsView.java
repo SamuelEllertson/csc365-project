@@ -52,6 +52,8 @@ public class ReservationsView {
             }
         }while(!correctInput);
 
+        // Check rooms are available for new dates !!
+
         if (resCpy.checkIn.after(resCpy.checkOut) || !controller.reservationDAO.update(resCpy)) {
             System.out.println("FAILED: Could not update dates\n");
             return;
@@ -97,8 +99,7 @@ public class ReservationsView {
         No rooms available:
         Select another room (back to Enter RoomId)
         Cancel Edit */
-
-
+        // !!
     }
 
     private void editRoom(Reservation res, Object[] roomsRes) {
@@ -171,7 +172,6 @@ public class ReservationsView {
         // Display dates, rooms, & occupants for that reservation
         System.out.println("\nReservation selected:\nreservationId: " + editRes.reservationId + "\ncardId: "
                 + editRes.cardId + "\nCheckIn: " + editRes.checkIn + "\nCheckOut: " + editRes.checkOut + "\n");
-        // Display rooms, & occupants for that reservation !!
 
         Set<RoomsReserved> roomsReserved = controller.roomsReservedDAO.getByReservationId(editRes.reservationId);
         Object[] roomsRes = roomsReserved.toArray();
@@ -204,7 +204,60 @@ public class ReservationsView {
      * on the screen.)
      */
     public void cancelReservation(int userId) {
+        boolean correctInput;
+        Set<Reservation> reservations = controller.reservationDAO.getByUserId(userId);
         System.out.println("-- Cancel Reservation --");
+        Object[] reservs = reservations.toArray();
+        int num = 1;
+        System.out.println("All reservations with dates: ");
+        for (Object res:reservs) {
+            System.out.println(num + ") " + ((Reservation) res).checkIn + " to " + ((Reservation) res).checkOut);
+            num++;
+        }
+        int resNum = 0;
+        System.out.print("\nEnter reservation number: ");
+        do {
+            try {
+                correctInput = true;
+                resNum = Integer.parseInt(input.nextLine());
+                if (resNum <= 0 || resNum > reservs.length) {
+                    throw new NumberFormatException();
+                }
+            }catch (NumberFormatException e) {
+                System.out.print("Invalid input: Enter reservation number between 1 and " + reservs.length + ": ");
+                correctInput = false;
+            }
+        }while(!correctInput);
+        Reservation cancelRes = (Reservation)reservs[resNum - 1];
+        Set<RoomsReserved> roomsReserved = controller.roomsReservedDAO.getByReservationId(cancelRes.reservationId);
+        Object[] roomsRes = roomsReserved.toArray();
+
+        // Make transaction !!
+        // Remove from RoomsReserved
+        for (RoomsReserved rRes:roomsReserved) {
+            if (!controller.roomsReservedDAO.delete(rRes)) {
+                System.out.println("FAILED: Could not cancel reservation");
+                return;
+            }
+        }
+        // Remove from Reservation
+        if (!controller.reservationDAO.delete(cancelRes)) {
+            System.out.println("FAILED: Could not cancel reservation");
+            return;
+        }
+        // Refund !!
+
+        // Display reservation info after deleted
+        System.out.println("\nSuccessfully cancelled reservation:\nreservationId: " + cancelRes.reservationId + "\ncardId: "
+                + cancelRes.cardId + "\nCheckIn: " + cancelRes.checkIn + "\nCheckOut: " + cancelRes.checkOut);
+        num = 1;
+        System.out.println("Rooms: ");
+        for (Object rr:roomsRes) {
+            System.out.println(num + ") RoomId: " + ((RoomsReserved)rr).roomId + ", occupants: "
+                    + ((RoomsReserved)rr).occupants);
+            num++;
+        }
+
     }
 
 }
