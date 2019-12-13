@@ -103,44 +103,50 @@ public class BookView {
 
     public void getPriceRange(){
 
-        System.out.println("Would you like to specify price range of this room? (Y/N)");
-        String pRange = scanner.nextLine();
-        if(pRange.equals("Y")){
+        boolean validInput;
 
-            boolean correctInput = true;
-            do {
-                try {
-                    correctInput = true;
-                    System.out.print("Enter the minimum price: ");
-                    minPrice = Float.parseFloat(scanner.nextLine());
-                    if(minPrice<0){
-                        throw new NumberFormatException();
+        do {
+            validInput =true;
+            System.out.println("Would you like to specify price range of this room? (Y/N)");
+            String pRange = scanner.nextLine();
+            if (pRange.equals("Y")) {
+
+                boolean correctInput = true;
+                do {
+                    try {
+                        correctInput = true;
+                        System.out.print("Enter the minimum price: ");
+                        minPrice = Float.parseFloat(scanner.nextLine());
+                        if (minPrice < 0) {
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid price. Make sure it is a valid number greater than 0.");
+                        correctInput = false;
                     }
-                }catch (NumberFormatException e){
-                    System.out.println("Not a valid price. Make sure it is a valid number greater than 0.");
-                    correctInput = false;
-                }
-            }while(!correctInput);
+                } while (!correctInput);
 
-            do {
-                try {
-                    correctInput = true;
-                    System.out.print("Enter the maximum price: ");
-                    maxPrice = Float.parseFloat(scanner.nextLine());
-                    if(maxPrice<minPrice){
-                        throw new NumberFormatException();
+                do {
+                    try {
+                        correctInput = true;
+                        System.out.print("Enter the maximum price: ");
+                        maxPrice = Float.parseFloat(scanner.nextLine());
+                        if (maxPrice < minPrice) {
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid price. Make sure it is a valid number greater than the minimum price.");
+                        correctInput = false;
                     }
-                }catch (NumberFormatException e){
-                    System.out.println("Not a valid price. Make sure it is a valid number greater than the minimum price.");
-                    correctInput = false;
-                }
-            }while(!correctInput);
+                } while (!correctInput);
 
-        }
-        else if(pRange.equals("N")){
-            return;
-        }
-
+            } else if (pRange.equals("N")) {
+                return;
+            } else {
+                validInput = false;
+                System.out.println("Invalid Input");
+            }
+        }while(!validInput);
 
 
     }
@@ -153,30 +159,138 @@ public class BookView {
         3) TWIN
         4) ANY*/
 
+        boolean validInput;
+
+        do {
+            validInput =true;
+            System.out.println("Would you like to specify the room type? (Y/N)");
+            String pRange = scanner.nextLine();
+            if (pRange.equals("Y")) {
+
+                boolean correctInput = true;
+                do {
+                    try {
+                        correctInput = true;
+                        Room.roomTypeEnum enumVal []= Room.roomTypeEnum.values();
+                        System.out.println("Select room type (Enter a number from the list): ");
+                        int i = 0;
+                        for( Room.roomTypeEnum option : enumVal){
+                            i++;
+                            System.out.println(i+") "+ option);
+                        }
+                        int option = Integer.parseInt(scanner.nextLine());
+
+                        if (option < 0 || option > i) {
+                            throw new NumberFormatException();
+                        }
+                        else{
+                            rType = enumVal[i-1].name();
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid option");
+                        correctInput = false;
+                    }
+                } while (!correctInput);
+
+
+            } else if (pRange.equals("N")) {
+                return;
+            } else {
+                validInput = false;
+                System.out.println("Invalid Input");
+            }
+        }while(!validInput);
+
     }
 
     public void getBedType(){
-        /*
-        Select bed type:
-        1) TWIN
-        2) TWIN_XL
-        3) DOUBLE
-        4) QUEEN
-        5) KING
-        6) CA_KING
-        7) ANY */
+
+        boolean validInput;
+
+        do {
+            validInput =true;
+            System.out.println("Would you like to specify the bed type? (Y/N)");
+            String pRange = scanner.nextLine();
+            if (pRange.equals("Y")) {
+
+                boolean correctInput = true;
+                do {
+                    try {
+                        correctInput = true;
+                        Room.bedTypeEnum enumVal []= Room.bedTypeEnum.values();
+                        System.out.println("Select bed type (Enter a number from the list): ");
+                        int i = 0;
+                        for( Room.bedTypeEnum option : enumVal){
+                            i++;
+                            System.out.println(i+") "+ option);
+                        }
+                        int option = Integer.parseInt(scanner.nextLine());
+
+                        if (option < 0 || option > i) {
+                            throw new NumberFormatException();
+                        }
+                        else{
+                            bType = enumVal[i-1].name();
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid option");
+                        correctInput = false;
+                    }
+                } while (!correctInput);
+
+
+            } else if (pRange.equals("N")) {
+                return;
+            } else {
+                validInput = false;
+                System.out.println("Invalid Input");
+            }
+        }while(!validInput);
 
     }
 
     public void getDecor(){
-        /*    Select decor type:
-    1) MODERN
-    2) INDUSTRIAL
-    3) NAUTICAL
-    4) SCANDINAVIAN
-    5) BOHEMIAN
-    6) RUSTIC
-    7) ANY*/
+        boolean validInput;
+
+        do {
+            validInput =true;
+            System.out.println("Would you like to specify the decor type? (Y/N)");
+            String pRange = scanner.nextLine();
+            if (pRange.equals("Y")) {
+
+                boolean correctInput = true;
+                do {
+                    try {
+                        correctInput = true;
+                        Room.decorEnum enumVal []= Room.decorEnum.values();
+                        System.out.println("Select decor type (Enter a number from the list): ");
+                        int i = 0;
+                        for( Room.decorEnum option : enumVal){
+                            i++;
+                            System.out.println(i+") "+ option);
+                        }
+                        int option = Integer.parseInt(scanner.nextLine());
+
+                        if (option < 0 || option > i) {
+                            throw new NumberFormatException();
+                        }
+                        else{
+                            bType = enumVal[i-1].name();
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Not a valid option");
+                        correctInput = false;
+                    }
+                } while (!correctInput);
+
+
+            } else if (pRange.equals("N")) {
+                return;
+            } else {
+                validInput = false;
+                System.out.println("Invalid Input");
+            }
+        }while(!validInput);
     }
 
     public void dispAvail(){
